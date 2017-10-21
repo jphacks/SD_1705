@@ -10,9 +10,7 @@ class GoogleMap_parsing():
         self.input_locations = self.__get_input_locations()
 
         self.result_of_gm_api = requests.get(
-            "https://maps.googleapis.com/maps/api/directions/json?\
-            origin={}&destination={}&waypoints={}&language=ja&key=AIzaSyCJb3c7Bd6oGo0mT9dmuBi_tCDzllc47rk".format(
-                origin, destination, "|".join(waypoints))).json()
+            "https://maps.googleapis.com/maps/api/directions/json?origin={}&destination={}&waypoints={}&language=ja&key=AIzaSyCJb3c7Bd6oGo0mT9dmuBi_tCDzllc47rk".format(self.origin, self.destination, "|".join(self.waypoints))).json()
 
     def __get_input_locations(self) -> list:
         """

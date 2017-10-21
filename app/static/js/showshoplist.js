@@ -12,7 +12,7 @@ function addShopList(store){
         document.write("</td>"); 
 
         document.write("<td>");
-        document.write(store[i].budget.average);
+        document.write(store[i].budget);
         document.write("</td>"); 
 
         document.write("<td>");

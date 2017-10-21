@@ -4,6 +4,9 @@
 
 import requests
 import json
+import re
+
+pattern_days = re.compile(r"([月火水木金土日][:：])")
 
 def search_near_restaurants(points):
     """
@@ -29,6 +32,9 @@ def search_near_restaurants(points):
             restaurant_dict = { attr: restaurant[attr] for attr in attrs }
             restaurant_dict['budget'] = restaurant['budget']['name']
             restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
+            restaurant_dict['open'] = restaurant_dict['open'].replace('（', '<br />（').replace('）', "）<br />")
+            pattern_days.sub(r"\1<br />", restaurant_dict['open'])
+            print(restaurant_dict['open'])
             restaurant_dict['parking'] = restaurant_dict['parking'].split('：')[0]
             if restaurant_dict not in ret:
                 ret.append(restaurant_dict)

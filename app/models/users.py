@@ -19,6 +19,18 @@ class UserModel():
         self.session.closed = True
         self.session.close()
 
+    def get_user_by_twitter_id(self, twitter_id):
+        '''
+        twitter_idで指定したユーザ１人を返す
+        :param twitter_id: int
+        :return: [User]
+        '''
+        try:
+            user_data = self.session.query(User).filter_by(twitter_id=twitter_id).one()
+            return [user_data]
+        except Exception as e:
+            return []
+
     def get_user_by_token(self, token):
         '''
         tokenで指定したユーザ１人を返す
@@ -29,7 +41,7 @@ class UserModel():
             user_data = self.session.query(User).filter_by(token=token).one()
             return [user_data]
         except Exception as e:
-            return e
+            return []
 
     def create_user(self, twitter_id, user_name, icon_url, token, secret):
         '''
@@ -70,4 +82,4 @@ class UserModel():
             self.session.commit()
             return [user]
         except Exception as e:
-            return e
+            return []

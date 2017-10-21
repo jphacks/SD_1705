@@ -12,19 +12,15 @@ function addShopList(store){
         document.write("</td>"); 
 
         document.write("<td>");
-        document.write(store[i].type);
+        document.write(store[i].budget.average);
         document.write("</td>"); 
 
         document.write("<td>");
-        document.write(store[i].cost);
+        document.write(store[i].open);
         document.write("</td>"); 
 
         document.write("<td>");
-        document.write(store[i].time);
-        document.write("</td>"); 
-
-        document.write("<td>");
-        document.write(store[i].park);
+        document.write(store[i].parking);
         document.write("</td>"); 
 
         document.write("</tr>");

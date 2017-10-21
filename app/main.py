@@ -9,6 +9,11 @@ def index():
 
     return render_template("index.html")
 
+@app.route("/top", methods=['GET'])
+def top():
+    
+    return render_template("top.html")
+
 @app.route("/search_result", methods=['GET'])
 def search_result():
     """

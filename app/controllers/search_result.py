@@ -1,4 +1,6 @@
 from flask import Blueprint
+from hotpepper_utils import search_near_restaurants
+#  from googlemaps_utils import *
 
 app = Blueprint('search_result', __name__, template_folder='templates')
 
@@ -34,14 +36,14 @@ def serach_result():
     処理の実態はsearch_restaurantsとstar_restaurant, unstar_restaurantで
     """
     mock_results = {
-        points: {
-            origin: {'lat': 38.253834, 'lng': 140.87407400000006}, # 片平キャンパス
-            destination: {'lat': 38.2601316, 'lng': 140.88243750000004}, # 仙台駅
-            waypoints:[
+        'points': {
+            'origin': {'lat': 38.253834, 'lng': 140.87407400000006}, # 片平キャンパス
+            'destination': {'lat': 38.2601316, 'lng': 140.88243750000004}, # 仙台駅
+            'waypoints':[
                 {'lat': 38.258623, 'lng': 140.879684} # e-Beans
             ]
         },
-        stores: {
+        'stores': {
             [
                 # 適当に数店舗省略してある
                 {'lat': '38.2545477359', 'lng': '140.8759171692', 'name': 'marie lulu マリールゥルゥ', 'budget': {'average': '昼1000円／夜2000円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '火～土、祝前日: 11:00～16:00 （料理L.O. 15:00）', 'parking': 'あり ：店前の有料コインパーキング', 'url': 'https://www.hotpepper.jp/strJ001101188/?vos=nhppalsa000016'}, {'lat': '38.2543225131', 'lng': '140.8769107048', 'name': '武屋食堂 北目町店', 'budget': {'average': '1500円/宴会時3500円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '月～土、祝前日: 11:30～14:30 （料理L.O. 14:30 ドリンクL.O. 14:30）17:30～23:30 （料理L.O. 23:00 ドリンクL.O. 23:00）日、祝日: 17:30～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'あり ：運転される方の飲酒はお断りします。', 'url': 'https://www.hotpepper.jp/strJ000974391/?vos=nhppalsa000016'}, 
@@ -51,4 +53,10 @@ def serach_result():
             ]
         }
     }
+    results = {}
+    results['points'] = mock_results['points']
+    points = [
+        results['points']['origin']
+    ]
+    results['stores'] = search_near_restaurants(points)
     return render_template('search_result.html', results=mock_results)

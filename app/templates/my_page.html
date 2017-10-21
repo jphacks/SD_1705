@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="my-page">
+  <h2>{{ user.name }}</h2>
+  <img src="{{ user.icon_url }}">
+
+  <table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+      <th></th>
+      <th>名前</th>
+      <th>予算</th>
+      <th>営業時間</th>
+      <th>駐車場</th>
+      <th>削除</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(restaurant, index) in restaurants">
+        <td>[[ index ]] </td>
+        <td> [[ restaurant.name ]]</td>
+        <td> [[ restaurant.budget.average ]]</td>
+        <td> [[ restaurant.open ]]</td>
+        <td> [[ restaurant.parking ]]</td>
+        <td> <span class="glyphicon glyphicon-remove"></span> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  var vm = new Vue({
+      el: '#my-page',
+      delimiters: ["[[", "]]"] ,
+      data: {
+          restaurants: {{ restaurants | tojson }}
+      }
+  })
+
+</script>
+{% endblock %}

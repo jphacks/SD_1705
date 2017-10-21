@@ -1,4 +1,4 @@
-from flask import Blueprint,session,render_template,request,redirect,url_for,g,Flask
+from flask import Blueprint, session, render_template, request, redirect, url_for, g, flash
 from models.users import UserModel
 from rauth.service import OAuth1Service
 from rauth.utils import parse_utf8_qsl
@@ -23,7 +23,6 @@ twitter = OAuth1Service(
 def before_request():
     g.user = None
     if 'twitter_token' in session:
-        print(session['twitter_token'])
         with UserModel() as User:
             users = User.get_user_by_token(session['twitter_token'])
             g.user = []
@@ -48,8 +47,12 @@ def login():
 
         return redirect(twitter.get_authorize_url(data['oauth_token'], **params))
 
-    is_login = g.user is not None
-    return render_template('login.html', login=is_login, user=g.user)
+    logining = g.user is not None
+    if 'is_login' in session:
+        is_login = session.pop('is_login')
+        flash('ログインしてください')
+
+    return render_template('login.html', logining=logining, user=g.user)
 
 
 @app.route('/logout')
@@ -95,4 +98,4 @@ def authorized():
             })
     session['twitter_token'] = request_token
 
-    return redirect(url_for('login.login'))
+    return redirect(url_for('my_page.my_page'))

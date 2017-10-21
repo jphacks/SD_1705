@@ -20,7 +20,7 @@ def search_result():
     入力: 
         出発地origin，到着地destination，(あれば)経由地の地点名waypoints
         または
-        starかunstarか(is_stared), star/unstarされたお店の一通りの情報(store: 辞書の中身は出力に倣う)
+        starかunstarか(is_stared), star/unstarされたお店のstore_id
         入力がどちらなのかによって処理を変える
     出力: 
         - 出発地・到着地・(あれば)経由地の緯度経度points
@@ -34,6 +34,7 @@ def search_result():
         - ルート表示route
         - 検索結果のお店の情報stores
             - 緯度経度lat, lng
+            - hotpepperのID store_id
             - 店名name
             - 住所address
             - 予算budget
@@ -64,6 +65,11 @@ def search_result():
             {'id': 'J000797021', 'lat': '38.2602889240', 'lng': '140.8822469063', 'name': 'シャルール ホテルメトロポリタン仙台', 'address': '宮城県仙台市青葉区中央１-1-1\u3000ホテルメトロポリタン仙台１階', 'open': '月～日、祝日、祝前日: 09:00～19:00 （料理L.O. 18:30 ドリンクL.O. 18:30）', 'parking': 'あり ：レストラン2000円以上利用で2時間無料', 'budget': '1501～2000円', 'url': 'https://www.hotpepper.jp/strJ000797021/?vos=nhppalsa000016', 'fav': False}, 
             {'id': 'J000054592', 'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'address': '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'budget': '2001～3000円', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016', 'fav': True}
         ]  
+    }
+
+    input_from_front = {
+        'fav': True
+        'store_id': 'J001101188'
     }
     
     origin = request.args.get('origin')
@@ -131,3 +137,8 @@ def search_result():
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top'))
 
+def fav(store_id):
+    return
+
+def unfav(store_id):
+    return

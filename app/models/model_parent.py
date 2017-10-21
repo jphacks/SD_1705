@@ -57,7 +57,7 @@ class Favorites(Base):
     __tablename__ = 'favorites'
     id = Column(Integer, primary_key=True)
     id_user = Column(Integer, nullable=False)
-    id_restaurant = Column(Integer, nullable=False)
+    id_restaurant = Column(Text, nullable=False)
     created_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     update_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     delete_at = Column(sqlalchemy.Text, default=None)

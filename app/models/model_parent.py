@@ -33,8 +33,8 @@ class Restaurant(Base):
     '''
     __tablename__ = 'restaurants'
     id = Column(Integer, primary_key=True)
-    lat = Column(Numeric, nullable=False)
-    lng = Column(Numeric, nullable=False)
+    lat = Column(REAL, nullable=False)
+    lng = Column(REAL, nullable=False)
     name = Column(Text, nullable=False)
     address = Column(Text, nullable=False)
     budget = Column(Text, nullable=False)
@@ -44,6 +44,9 @@ class Restaurant(Base):
     created_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     update_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     delete_at = Column(sqlalchemy.Text, default=None)
+
+    def __repr__(self):
+        return "<id:{}, name:{}, lat:{}, lng{}>".format(self.id, self.name, self.lat, self.lng)
 
 
 class Favorites(Base):
@@ -57,6 +60,9 @@ class Favorites(Base):
     created_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     update_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     delete_at = Column(sqlalchemy.Text, default=None)
+
+    def __repr__(self):
+        return "<id:{}, id_user:{}, id_restaurant_id:{}>".format(self.id, self.id_user, self.id_restaurant)
 
 
 def create_tables():

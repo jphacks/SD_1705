@@ -55,8 +55,6 @@ def serach_result():
     }
     results = {}
     results['points'] = mock_results['points']
-    points = [
-        results['points']['origin']
-    ]
+    points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
     results['stores'] = search_near_restaurants(points)
     return render_template('search_result.html', results=mock_results)

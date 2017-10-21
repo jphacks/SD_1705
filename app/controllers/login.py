@@ -38,7 +38,7 @@ def before_request():
 def login():
     if request.method == 'POST':
         oauth_callback = url_for('login.authorized', _external=True)
-        params = {'oauth_callback': oauth_callback, 'force_login':True}
+        params = {'oauth_callback': oauth_callback}
 
         r = twitter.get_raw_request_token(params=params)
         data = parse_utf8_qsl(r.content)
@@ -46,6 +46,9 @@ def login():
         session['twitter_oauth'] = (data['oauth_token'], data['oauth_token_secret'])
 
         return redirect(twitter.get_authorize_url(data['oauth_token'], **params))
+
+    if 'twitter_token' in session:
+        return redirect(url_for('top.top_page'))
 
     logining = g.user is not None
     is_login = True
@@ -98,4 +101,4 @@ def authorized():
             })
     session['twitter_token'] = request_token
 
-    return redirect(url_for('my_page.my_page'))
+    return redirect(url_for('top.top_page'))

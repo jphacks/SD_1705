@@ -52,10 +52,11 @@ def search_result():
     }
 
     # ユーザID求める
-    if 'twitter_token' in session:
+    if session.get('twitter_token') is not None:
         token = session['twitter_token']
     else:
-        redirect(url_for('login.login'))
+        session['is_login'] = False
+        return redirect(url_for('login.login'))
     with UserModel() as User:
         try:
             user = User.get_user_by_token(token=token)

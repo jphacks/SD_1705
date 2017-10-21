@@ -23,6 +23,9 @@ class User(Base):
     update_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     delete_at = Column(sqlalchemy.Text, default=None)
 
+    def __repr__(self):
+        return u"<twitter_id:{}, user_name:{})>".format(self.twitter_id, self.user_name)
+
 
 class Restaurant(Base):
     '''

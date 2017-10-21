@@ -49,7 +49,7 @@ class GoogleMap_parsing():
                 self.__get_result_dict(result_dict, status_api, self.input_locations[i], i)
             else:
                 self.__get_result_dict(result_dict, status_api, self.input_locations[i], i)
-
+        
         return (self.result_of_gm_api["status"], result_dict)
 
 

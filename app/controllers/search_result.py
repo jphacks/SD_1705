@@ -1,4 +1,5 @@
 from flask import Blueprint, session, render_template, redirect, url_for, request
+from pprint import pprint
 
 from controllers.hotpepper_utils import search_near_restaurants
 from controllers.googlemap_utils import GoogleMap_parsing
@@ -68,7 +69,7 @@ def search_result():
     }
 
     input_from_front = {
-        'fav': True
+        'fav': True,
         'store_id': 'J001101188'
     }
 
@@ -90,6 +91,7 @@ def search_result():
     waypoints = [request.args.get('way{}'.format(i))for i in range(num_of_ways)]
 
     googlemap = GoogleMap_parsing(origin, destination, waypoints)
+
     status = googlemap.get_input_location_status()
     errors = {
         'NOT_FOUND': status[1],
@@ -100,13 +102,21 @@ def search_result():
     for _ in range(MAX):
         if status[0] == 'OK':
             results = {}
-            results['points'] = {
-                'origin': origin,
-                'destination': destination,
-                'waypoints': waypoints
-            }
-            results['stores'] = search_near_restaurants(googlemap.get_route())
 
+            latlngs = []
+            routes = googlemap.result_of_gm_api['routes'][0]['legs']
+            latlngs.append(routes[0]['start_location'])
+            for route in routes:
+                latlngs.append(route['end_location'])
+            results['points'] = {
+                'origin': {'name': origin, 'lat': latlngs[0]['lat'], 'lng': latlngs[0]['lng']}, 
+                'destination': {'name': destination, 'lat': latlngs[-1]['lat'], 'lng': latlngs[-1]['lng']}, 
+                'waypoints': []
+            }
+            for idx,latlng in enumerate(latlngs):
+                results['points']['waypoints'].append({'name': waypoints[idx], 'lat': latlng['lat'], 'lng': latlng['lng']})
+                
+            results['stores'] = search_near_restaurants(googlemap.get_route())
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
                 try:

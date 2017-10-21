@@ -45,7 +45,7 @@ def my_page():
                 'parking': data.parking,
                 'url': data.url
             })
-    print(len(favorites))
+    #print(len(favorites))
 
     return render_template(
             'my_page.html',

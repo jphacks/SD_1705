@@ -119,13 +119,13 @@ def search_result():
             session['NOT_FOUND'] = errors['NOT_FOUND']
             session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
             session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
-            return redirect(url_for('top'))
+            return redirect(url_for('top.top_page'))
 
     else:
         session['NOT_FOUND'] = errors['NOT_FOUND']
         session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
-        return redirect(url_for('top'))
+        return redirect(url_for('top.top_page'))
 
 def fav(user_id, store_id):
     with FavoriteModel() as Favorite:

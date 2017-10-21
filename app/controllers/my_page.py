@@ -24,10 +24,12 @@ def my_page():
             'name': user_info.user_name,
             'icon_url': user_info.icon_url
         }
-
+    # print(user['id'])
     with FavoriteModel() as Favorite:
         favorites = Favorite.get_restaurants_by_id_user(user['id'])
 
+    # print(user['id'])
+    # print(favorites)
     restaurants = []
     with RestaurantModel() as Restaurant:
         for favorite in favorites:
@@ -43,6 +45,7 @@ def my_page():
                 'parking': data.parking,
                 'url': data.url
             })
+    #print(len(favorites))
 
     return render_template(
             'my_page.html',

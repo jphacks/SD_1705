@@ -4,13 +4,14 @@
     <div id="showmap">
       <div id="map" style="width:620px; height:400px"></div>
       <script type="text/javascript">
-        // console.log( {{results.points.origin}});
-        var center_lat = ( {{results.points.origin.lat}} + {{results.points.destination.lat}} )/2;
-        var center_lng = ( {{results.points.origin.lng}} + {{results.points.destination.lng}} )/2;
-        // console.log(( {{results.points.origin.lat}} + {{results.points.destination.lat}} )/2);
-        window.onload = function(
-        ){
-          initMap(center_lat, center_lng, {{ results.stores | tojson}})
+          var center_lat = ({{results.points.origin.lat}} + {{results.points.destination.lat}})/2;
+          var center_lng = ({{results.points.origin.lng}} + {{results.points.destination.lng}})/2;
+          var org = '{{ results.points.origin.name }}'
+          var des = '{{ results.points.destination.name }}'
+          window.onload = function(
+
+          ){
+          initMap(center_lat, center_lng, {{ results.stores | tojson}}, {{ results.points.waypoints | tojson}})
         }
 
       </script>

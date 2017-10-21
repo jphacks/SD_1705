@@ -1,7 +1,8 @@
 var marker = new Array();
 var infoWindow = new Array();
 
-function initMap(lat, lng, stores) {
+
+function initMap(lat, lng, stores, waypoints) {
 
   var opts = {
     zoom: 15,
@@ -22,18 +23,29 @@ function initMap(lat, lng, stores) {
 
   }
 
+  addRoute(waypoints, map)
+
+
 }
 
 //routeは後
-function addRoute(origin, destination, map){
+function addRoute(way_points, map){
+
+  var directionsService = new google.maps.DirectionsService;
+  var waypts = [];
+
+  for(var i = 0; i < way_points.length; i++){
+    waypts.push({location: new google.maps.LatLng(way_points[i].lat, way_points[i].lng)})
+  }
 
   var request = {
-    origin: new google.maps.LatLang(origin.lat, origin.lng),
-    destination: new google.maps.LatLang(destination.lat, destination.lng),
+    origin: org,
+    destination:  des,
+    waypoints: waypts,
     travelMode: google.maps.DirectionsTravelMode.WALKING
   }
 
-   directionsService.route(request, function(result, status){
+  directionsService.route(request, function(result, status){
     toRender(result, map);
   })
 

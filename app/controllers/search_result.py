@@ -1,8 +1,9 @@
-from flask import Blueprint, session, render_template, redirect, url_for
+from flask import Blueprint, session, render_template, redirect, url_for, request
 
 from hotpepper_utils import search_near_restaurants
 #  from googlemaps_utils import *
 
+import sys; sys.path.append('..') # いらなくなるかも
 from models.favorites import FavoriteModel
 from models.users import UserModel
 
@@ -40,7 +41,7 @@ def search_result():
             - その店がこのユーザにふぁぼられているかどうかfav
         - この2つを1つの辞書resultsにまとめて返す
     処理の実態はsearch_restaurantsとstar_restaurant, unstar_restaurantで
-    エラー内容をセッションにぶち込む
+    エラー内容をセッションにぶち込む(UNKNOWN_ERRORならもう一回呼び出す)
     """
     mock_results = {
         'points': {
@@ -65,13 +66,16 @@ def search_result():
     points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
     results['stores'] = search_near_restaurants(points)
     # ユーザid取得
-    with User() as user:
+    with UserModel() as user:
         try:
-            user_data = user.get_user_by_token(session['twitter_token'])
+            session['twitter_token']
+            user_data = user.get_user_by_token(session.pop('twitter_token', None))[0]
+            user_id = user_data.twitter_id
+            print(user_data)
         except:
             redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
     # ふぁぼられてるかどうかチェック
-    with Favorite() as favorite:
+    with FavoriteModel() as favorite:
         for restaurant in results['stores']:
             pass
     return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える

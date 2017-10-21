@@ -58,6 +58,9 @@ class Favorites(Base):
     update_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     delete_at = Column(sqlalchemy.Text, default=None)
 
+    def __repr__(self):
+        return "<id:{}, id_user:{}, id_restaurant_id:{}>".format(self.id, self.id_user, self.id_restaurant)
+
 
 def create_tables():
     '''

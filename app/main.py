@@ -43,8 +43,9 @@ def search_result():
 
     origin = {"lat":38.253834, "lng":140.874074}
     destination =  {"lat":38.260132, "lng":140.882438}
-    stores = [{"lat":38.260172 , "lng":140.871184, "name":"bonten"},
-                    {"lat":38.261172 , "lng":140.872184, "name":"yaya"}]
+
+    stores = [{"lat":38.260172 , "lng":140.871184, "name":"bonten", "type":"izakaya", "cost": "1000~2000", "time":"8:00~10:00", "park":"No"},
+                    {"lat":38.261172 , "lng":140.872184, "name":"yaya", "type":"izakaya", "cost": "1000~2000", "time":"8:00~10:00", "park":"No"}]
     
     return render_template(
         "search_result.html",

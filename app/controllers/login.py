@@ -1,4 +1,4 @@
-from flask import Blueprint,session,render_template,request,redirect,url_for,g
+from flask import Blueprint,session,render_template,request,redirect,url_for,g,Flask
 from models.users import UserModel
 import json
 from rauth.service import OAuth1Service
@@ -29,7 +29,7 @@ def before_request():
 
 
 @app.route('/login')
-def main():
+def login_main():
     return render_template('login.html')
 
 
@@ -45,10 +45,11 @@ def login():
 
     return redirect(twitter.get_authorize_url(data['oauth_token'],**params))
 
+
 @app.route('/user/logout')
 def logout():
     session.pop('twitter_token',None)
-    return redirect(url_for('login'))
+    return redirect(url_for('login_main'))
 
 
 @app.route('/user/authorized')
@@ -56,7 +57,7 @@ def authorized():
     request_token, request_token_secret = session.pop('twitter_oauth')
     if not 'oauth_token' in request.args:
         session['login_error'] = 'You did not authorize the request'
-        return redirect(url_for('login'))
+        return redirect(url_for('login_main'))
     try:
         creds = {
             'request_token':request_token,
@@ -64,9 +65,16 @@ def authorized():
         params = {'oauth_verifier':request.args['oauth_verifier']}
         sess = twitter.get_auth_session(params=params,**creds)
     except Exception as e:
-        session['login_error'] = 'There was a problem loggin into Twitter: '+str(e)
-        return redirect(url_for('login'))
+        session['login_error'] = 'There was a problem login into Twitter: '+str(e)
+        return redirect(url_for('login_main'))
 
     verify = sess.get('account/verify_credentials.json',params={'format':'json'}).json()
 
-    return redirect(url_for('login'))
+    with UserModel as User:
+        user = User.get_user_by_token(request_token)
+        if user is None:
+            User.create_user(verify['id'], verify['screen_name'], verify['profile_image_url'], request_token, request_token_secret)
+        else:
+            User.update_user_token(verify['id'], verify['screen_name'], request_token)
+
+    return redirect(url_for('login_main'))

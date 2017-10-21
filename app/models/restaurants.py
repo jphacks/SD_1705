@@ -19,11 +19,12 @@ class RestaurantModel():
         self.session.closed = True
         self.session.close()
 
-    def create_restaurant(self, store_id, lat, lng, name, address, budget, open, parking, url):
+    def create_restaurant(self, store_id, lat, lng, genre, name, address, budget, open, parking, url):
        '''
        新しいお店を登録
        :param lat: 緯度
        :param lng: 軽度
+       :param genre: ジャンル名
        :param name: 名前
        :param address: 住所
        :param budget: 予算
@@ -36,6 +37,7 @@ class RestaurantModel():
            store_id=store_id,
            lat=lat,
            lng=lng,
+           genre=genre,
            name=name,
            address=address,
            budget=budget,

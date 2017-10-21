@@ -24,5 +24,12 @@
             <input type="button" onclick=document.frm.submit(); value="ろぐいん" />
         </form>
     {% endif %}
+    <script>
+        window.onload = function() {
+            if('{{ is_login }}' == 'False'){
+                alert("ログインしてください");
+            }
+        };
+    </script>
 {% endblock %}
 

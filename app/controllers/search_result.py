@@ -21,7 +21,7 @@ def search_result():
     入力: 
         出発地origin，到着地destination，(あれば)経由地の地点名waypoints
         または
-        starかunstarか(is_stared), star/unstarされたお店のstore_id
+        star/unstarされたお店のstore_id
         入力がどちらなのかによって処理を変える
     出力: 
         - 出発地・到着地・(あれば)経由地の緯度経度points
@@ -48,6 +48,7 @@ def search_result():
     エラー内容をセッションにぶち込む(UNKNOWN_ERRORならもう一回呼び出す)
     """
     input_from_front = {
+        'fav': True,
         'store_id': 'J001101188'
     }
 
@@ -69,8 +70,11 @@ def search_result():
     
     origin = request.args.get('origin')
     destination = request.args.get('dest')
-    num_of_ways = len(request.args) - 2
-    waypoints = [request.args.get('way{}'.format(i))for i in range(num_of_ways)]
+    num_of_waypoints = len(request.args) - 2
+    waypoints = [request.args.get('way{}'.format(i))for i in range(num_of_waypoints)]
+    budget = request.args.get('budget')
+    genre = request.args.get('type')
+    way = request.args.get('way')
 
     googlemap = GoogleMap_parsing(origin, destination, waypoints)
 
@@ -103,7 +107,7 @@ def search_result():
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
                 try:
                     favorites = Favorite.get_restaurants_by_id_user(user_id)
-                    favorite_restaurants = [Restaurant.get_restaurant_by_store_id(favorite_restaurant.store_id)[0] for favorite_restaurant in favorites]
+                    favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
                 except:
                     return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
             
@@ -127,18 +131,12 @@ def search_result():
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top.top_page'))
 
-def handle_fav(user_id, store_id):
+def fav(user_id, store_id):
     with FavoriteModel() as Favorite:
-        if Favorite.is_exist_fav(user_id, store_id):
-            return unfav(Favorite, user_id, store_id)
-        else:
-            return fav(Favorite, user_id, store_id)
+        Favorite.create_fav(user_id, store_id)
+    return # 返り値どうする
 
-def fav(Favorite, user_id, store_id):
-    with RestaurantModel() as Retaurant:
-        if not(Retaurant.get_restaurant_by_store_id(store_id)):
-            Retaurant.create_restaurant()
-    return Favorite.create_fav(user_id, store_id)
-
-def unfav(Favorite, user_id, store_id):
-    return Favorite.delete_fav(user_id, store_id)
+def unfav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return# 返り値どうするの

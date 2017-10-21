@@ -2,13 +2,14 @@ import requests
 from pprint import pprint
 
 class GoogleMap_parsing():
-    def __init__(self, origin: str, destination: str, waypoints: list):
+    def __init__(self, origin: str, destination: str, waypoints: list, mode="driving"):
         self.route_list = []
         self.origin = origin
         self.destination = destination
         self.waypoints = waypoints
+        self.mode = mode
         self.result_of_gm_api = requests.get(
-            "https://maps.googleapis.com/maps/api/directions/json?origin={}&destination={}&waypoints={}&language=ja&key=AIzaSyCJb3c7Bd6oGo0mT9dmuBi_tCDzllc47rk".format(self.origin, self.destination, "|".join(self.waypoints))).json()
+            "https://maps.googleapis.com/maps/api/directions/json?origin={}&destination={}&waypoints={}&mode={}&language=ja&key=AIzaSyCJb3c7Bd6oGo0mT9dmuBi_tCDzllc47rk".format(self.origin, self.destination, "|".join(self.waypoints), self.mode)).json()
 
         self.input_locations = self.__get_input_locations()
 

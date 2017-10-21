@@ -13,6 +13,10 @@ function addShopList(store){
         document.write("</td>"); 
 
         document.write("<td>");
+        document.write(store[i].genre);
+        document.write("</td>"); 
+
+        document.write("<td>");
         document.write(store[i].open);
         document.write("</td>"); 
 

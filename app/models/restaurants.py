@@ -50,11 +50,11 @@ class RestaurantModel():
        self.session.commit()
        return [new_restaurant]
 
-    def get_restaurant_by_id(self, id):
+    def get_restaurant_by_store_id(self, store_id):
         '''
-        お店をidで引っ張ってくる
+        お店をstore_idで引っ張ってくる
         :param id: お店のid
         :return: [Restaurant]
         '''
-        restaurant_data = self.session.query(Restaurant).filter_by(id=id).one()
+        restaurant_data = self.session.query(Restaurant).filter_by(store_id=store_id).one()
         return [restaurant_data]

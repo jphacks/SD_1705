@@ -9,9 +9,7 @@
           var center_lng = ({{results.points.origin.lng}} + {{results.points.destination.lng}})/2;
           var org = '{{ results.points.origin.name }}'
           var des = '{{ results.points.destination.name }}'
-          window.onload = function(
-
-          ){
+          window.onload = function(){
           initMap(center_lat, center_lng, {{ results.stores | tojson}}, {{ results.points.waypoints | tojson}})
         }
 
@@ -28,16 +26,18 @@
   <script type="text/javascript">
     var url = location.href;
     console.log(url);
-    var tag = "<form class= 'form-inline' method = 'get' action = " + url + ">"; 
+    var tag = "<form class='form-inline' method ='post' action = '"+ url + "'>";
     document.write(tag);
-    // console.log(url);
-  </script> 
+  </script>
+
+  <!-- <script type="text/javascript" src="static/js/geturl.js"></script> -->
   <!-- <form class="form-inline" > -->
       <fieldset>
+      <div class = "row">
         <div class="form-group">
-          <label for="select" class="col-lg-2 control-label">予算</label>
-          <div class="col-lg-10">
+          <div class="col-xs-5">
             <select class="form-control" id="select" name = "budget" value = "">
+              <option value='' disabled selected style='display:none;'>予算</option>
               <option>1501~2000</option>
               <option>2001~3000</option>
               <option>3001~4000</option>
@@ -50,19 +50,32 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="select" class="col-lg-2 control-label">ジャンル</label>
-          <div class="col-lg-10">
-            <select class="form-control" id="select" name = "type" value = "">
+          <div class="col-xs-5">
+            <select class="form-control" id="select" name = "genre" value = "">
+              <option value='' disabled selected style='display:none;'>ジャンル</option>
               <option>居酒屋</option>
-              <option>洋食</option>
+              <option>ダイニングバー</option>
+              <option>創作料理</option>
               <option>和食</option>
+              <option>洋食</option>
+              <option>イタリアン・フレンチ</option>
+              <option>中華</option>
+              <option>焼肉・韓国料理</option>
+              <option>アジアン</option>
+              <option>各国料理</option>
+              <option>カラオケ・パーティ</option>
+              <option>バー・カクテル</option>
+              <option>ラーメン</option>
+              <option>お好み焼き・もんじゃ・鉄板焼き</option>
+              <option>カフェ・スイーツ</option>
+              <option>その他</option>
             </select>
           </div>
         </div>
         <div class="form-group">
-            <label for="select" class="col-lg-2 control-label">検索半径</label>
-            <div class="col-lg-10">
-              <select class="form-control" id="select" name = "rad" value = "">
+            <div class="col-xs-5">
+              <select class="form-control" id="select" name = "range" value = "">
+                <option value='' disabled selected style='display:none;'>検索半径</option>
                 <option>300m</option>
                 <option>500m</option>
                 <option>1000m</option>
@@ -73,14 +86,13 @@
           </div>
         <div class="form-group">
             <div class="form-group">
-                <label for="select" class="col-lg-2 control-label">移動手段</label>
-                <div class="col-lg-10">
+                <div class="col-xs-5">
                   <select class="form-control" id="select" name = "way" value = "">
+                    <option value='' disabled selected style='display:none;'>移動手段</option>
                     <option>徒歩</option>
                     <option>車</option>
-                    <option>高速道路</option>
-                    <option>電車</option>
-                    <option>飛行機</option>
+                    <option>自転車</option>
+                    <option>公共交通期間</option>
                   </select>
                 </div>
               </div>
@@ -88,6 +100,7 @@
           <div class="col-lg-10 col-lg-offset-2">
             <button class="btn btn-primary" type="submit">絞り込み</button>
           </div>
+        </div>
         </div>
       </fieldset>
     </form>
@@ -98,6 +111,7 @@
             <tr>
               <th width = "15">名前</th>            
               <th width = "15">予算</th>
+              <th width = "15">ジャンル</th>
               <th width = "20">営業時間</th>
               <th width = "5">駐車場</th>
             </tr>

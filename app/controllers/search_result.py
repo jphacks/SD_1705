@@ -20,7 +20,7 @@ def search_result():
     入力: 
         出発地origin，到着地destination，(あれば)経由地の地点名waypoints
         または
-        starかunstarか(is_stared), star/unstarされたお店の一通りの情報(store: 辞書の中身は出力に倣う)
+        starかunstarか(is_stared), star/unstarされたお店のstore_id
         入力がどちらなのかによって処理を変える
     出力: 
         - 出発地・到着地・(あれば)経由地の緯度経度points
@@ -34,6 +34,7 @@ def search_result():
         - ルート表示route
         - 検索結果のお店の情報stores
             - 緯度経度lat, lng
+            - hotpepperのID store_id
             - 店名name
             - 住所address
             - 予算budget
@@ -65,6 +66,23 @@ def search_result():
             {'id': 'J000054592', 'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'address': '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'budget': '2001～3000円', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016', 'fav': True}
         ]  
     }
+
+    input_from_front = {
+        'fav': True
+        'store_id': 'J001101188'
+    }
+
+    # ユーザID求める
+    token = session['twitter_token']
+    with UserModel() as User:
+        try:
+            user = User.get_user_by_token(token=token)
+        except:
+            return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
+    if user:
+        user_id = user[0].id
+    else:
+        return redirect(url_for('login.login'))
     
     origin = request.args.get('origin')
     destination = request.args.get('dest')
@@ -88,20 +106,6 @@ def search_result():
                 'waypoints': waypoints
             }
             results['stores'] = search_near_restaurants(googlemap.get_route())
-            
-            # ユーザid取得
-            token = session['twitter_token']
-            
-            with UserModel() as User:
-                try:
-                    user = User.get_user_by_token(token=token)
-                except:
-                    return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-            
-            if user:
-                user_id = user[0].id
-            else:
-                return redirect(url_for('login.login'))
 
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
@@ -131,3 +135,12 @@ def search_result():
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top'))
 
+def fav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return # 返り値どうする
+
+def unfav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return# 返り値どうするの

@@ -30,8 +30,7 @@ def search_result():
                     {lat:0, lng:0}, {lat:1, lng:1}, ...
                 ]
             }
-        - ルート表示root
-            - placeIdのリスト
+        - ルート表示route
         - 検索結果のお店の情報stores
             - 緯度経度lat, lng
             - 店名name

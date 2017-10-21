@@ -25,7 +25,9 @@ def before_request():
     g.user = None
     if 'twitter_token' in session:
         with UserModel() as User:
-            g.user = User.get_user_by_token(session['twitter_token'])
+            users = User.get_user_by_token(session['twitter_token'])
+            for user in users:
+                g.user = user
 
 
 @app.route('/login')
@@ -71,7 +73,9 @@ def authorized():
     verify = sess.get('account/verify_credentials.json',params={'format':'json'}).json()
 
     with UserModel as User:
-        user = User.get_user_by_token(request_token)
+        users = User.get_user_by_token(session['twitter_token'])
+        for user in users:
+            g.user = user
         if user is None:
             User.create_user(verify['id'], verify['screen_name'], verify['profile_image_url'], request_token, request_token_secret)
         else:

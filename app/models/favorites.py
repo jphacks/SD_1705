@@ -35,6 +35,16 @@ class FavoriteModel():
         self.session.commit()
         return [new_fav]
 
+    def delete_fav(self, id_user, id_restaurant):
+        del_fav = Favorites(
+            id_user=id_user,
+            id_restaurant=id_restaurant
+        )
+        self.session.delete(del_fav)
+        self.session.flush()
+        self.session.commit()
+        return [del_fav]
+
     def get_restaurants_by_id_user(self, id_user):
         '''
         あるユーザがファボった複数のお店を返す

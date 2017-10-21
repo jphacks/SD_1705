@@ -1,4 +1,5 @@
 from flask import Blueprint, session, render_template, redirect, url_for, request
+from pprint import pprint
 
 from controllers.hotpepper_utils import search_near_restaurants
 from controllers.googlemap_utils import GoogleMap_parsing
@@ -20,20 +21,21 @@ def search_result():
     入力: 
         出発地origin，到着地destination，(あれば)経由地の地点名waypoints
         または
-        starかunstarか(is_stared), star/unstarされたお店の一通りの情報(store: 辞書の中身は出力に倣う)
+        starかunstarか(is_stared), star/unstarされたお店のstore_id
         入力がどちらなのかによって処理を変える
     出力: 
         - 出発地・到着地・(あれば)経由地の緯度経度points
             {
-                origin: {lat:0, lng:0}, 
-                destination: {lat:0, lng:0}, 
+                origin: {name: hoge, lat:0, lng:0}, 
+                destination: {name: fuga, lat:0, lng:0}, 
                 waypoints:[
-                    {lat:0, lng:0}, {lat:1, lng:1}, ...
+                    {name: ago, lat:0, lng:0}, {name: kubi, lat:1, lng:1}, ...
                 ]
             }
         - ルート表示route
         - 検索結果のお店の情報stores
             - 緯度経度lat, lng
+            - hotpepperのID store_id
             - 店名name
             - 住所address
             - 予算budget
@@ -47,10 +49,10 @@ def search_result():
     """
     mock_results = {
         'points': {
-            'origin': {'lat': 38.253834, 'lng': 140.87407400000006}, # 片平キャンパス
-            'destination': {'lat': 38.2601316, 'lng': 140.88243750000004}, # 仙台駅
+            'origin': {'name': '東北大学', 'lat': 38.253834, 'lng': 140.87407400000006}, # 片平キャンパス
+            'destination': {'name': '仙台駅', 'lat': 38.2601316, 'lng': 140.88243750000004}, # 仙台駅
             'waypoints':[
-                {'lat': 38.258623, 'lng': 140.879684} # e-Beans
+                {'name': 'e-Beans', 'lat': 38.258623, 'lng': 140.879684} # e-Beans
             ]
         },
         'route': [
@@ -65,6 +67,23 @@ def search_result():
             {'id': 'J000054592', 'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'address': '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'budget': '2001～3000円', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016', 'fav': True}
         ]  
     }
+
+    input_from_front = {
+        'fav': True,
+        'store_id': 'J001101188'
+    }
+
+    # ユーザID求める
+    token = session['twitter_token']
+    with UserModel() as User:
+        try:
+            user = User.get_user_by_token(token=token)
+        except:
+            return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
+    if user:
+        user_id = user[0].id
+    else:
+        return redirect(url_for('login.login'))
     
     origin = request.args.get('origin')
     destination = request.args.get('dest')
@@ -72,6 +91,7 @@ def search_result():
     waypoints = [request.args.get('way{}'.format(i))for i in range(num_of_ways)]
 
     googlemap = GoogleMap_parsing(origin, destination, waypoints)
+
     status = googlemap.get_input_location_status()
     errors = {
         'NOT_FOUND': status[1],
@@ -82,27 +102,21 @@ def search_result():
     for _ in range(MAX):
         if status[0] == 'OK':
             results = {}
-            results['points'] = {
-                'origin': origin,
-                'destination': destination,
-                'waypoints': waypoints
-            }
-            results['stores'] = search_near_restaurants(googlemap.get_route())
-            
-            # ユーザid取得
-            token = session['twitter_token']
-            
-            with UserModel() as User:
-                try:
-                    user = User.get_user_by_token(token=token)
-                except:
-                    return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-            
-            if user:
-                user_id = user[0].id
-            else:
-                return redirect(url_for('login.login'))
 
+            latlngs = []
+            routes = googlemap.result_of_gm_api['routes'][0]['legs']
+            latlngs.append(routes[0]['start_location'])
+            for route in routes:
+                latlngs.append(route['end_location'])
+            results['points'] = {
+                'origin': {'name': origin, 'lat': latlngs[0]['lat'], 'lng': latlngs[0]['lng']}, 
+                'destination': {'name': destination, 'lat': latlngs[-1]['lat'], 'lng': latlngs[-1]['lng']}, 
+                'waypoints': []
+            }
+            for idx,latlng in enumerate(latlngs):
+                results['points']['waypoints'].append({'name': waypoints[idx], 'lat': latlng['lat'], 'lng': latlng['lng']})
+                
+            results['stores'] = search_near_restaurants(googlemap.get_route())
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
                 try:
@@ -131,3 +145,12 @@ def search_result():
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top.top_page'))
 
+def fav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return # 返り値どうする
+
+def unfav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return# 返り値どうするの

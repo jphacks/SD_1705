@@ -2,24 +2,26 @@
 {% block content %}
 	<h2>出発地・到着地を入力</h2>
 	<p>　　　　　　　　　　　</p>
-	<form class="form-inline">
+	<form class="form-inline" method="get" action="http://127.0.0.1:5000/search_result">
 			<div class="form-group">
 					<label class="control-label" for="focusedInput">出発地</label>
-					<input class="form-control" placeholder="出発地を入力">
+					<input class="form-control" name = "origin" value = "" placeholder="出発地を入力">
 			</div>
 			<div class="form-group">
 					<label class="control-label" for="focusedInput">到着地</label>
-					<input class="form-control" placeholder="到着地を入力">
+					<input class="form-control" name = "destination" value = "" placeholder="到着地を入力">
 			</div>
-	</form>
+	<!-- </form> -->
 	<p>　　　　　　　　　　　</p>
 	<h2>経由地を入力</h2>
 	<p>　　　　　　　　　　　</p>
+	<!-- <form method="get" action="http://127.0.0.1:5000/search_result"> -->
 	<div id="way">
-			<span class="glyphicon glyphicon-plus" size = 19 onclick="addInputForm()">経路追加</span>
-	</div>
+			<span class="glyphicon glyphicon-plus" size = 19 onclick="addInputForm()"><label>経路追加</label></span>
+		</div>
 
-	<script type="text/javascript" src="static/js/addform.js"></script>					 
-	<p>　　　　　　　　　　　</p>	
-	<div class="btn btn-primary">検索</div>
+		<script type="text/javascript" src="static/js/addform.js"></script>					 
+		<p>　　　　　　　　　　　</p>	
+		<button class="btn btn-primary" type = "submit">検索</button>
+	</form>
 {% endblock %}

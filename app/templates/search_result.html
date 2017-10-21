@@ -4,7 +4,6 @@
     <div id="showmap">
       <div id="map" style="width:620px; height:400px"></div>
       <script type="text/javascript">
-
           var center_lat = ({{results.points.origin.lat}} + {{results.points.destination.lat}})/2;
           var center_lng = ({{results.points.origin.lng}} + {{results.points.destination.lng}})/2;
           var org = '{{ results.points.origin.name }}'
@@ -28,11 +27,10 @@
       <table class="table table-striped table-hover ">
           <thead>
             <tr>
-              <th></th>
-              <th>名前</th>            
-              <th>予算</th>
-              <th>営業時間</th>
-              <th>駐車場</th>
+              <th width = "15">名前</th>            
+              <th width = "15">予算</th>
+              <th width = "20">営業時間</th>
+              <th width = "5">駐車場</th>
             </tr>
           </thead>
           <tbody>

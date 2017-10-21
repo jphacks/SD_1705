@@ -33,6 +33,7 @@ class Restaurant(Base):
     '''
     __tablename__ = 'restaurants'
     id = Column(Integer, primary_key=True)
+    store_id = Column(Text, nullable=False)
     lat = Column(REAL, nullable=False)
     lng = Column(REAL, nullable=False)
     name = Column(Text, nullable=False)

@@ -1,7 +1,27 @@
 {% extends "baselogin.html" %}
 {% block content %}
-
-    
-
-
+<h1>ログインてすと</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+    {% if login %}
+        <form name="frm" method="get" action="/logout">
+            <input type="button" onclick=document.frm.submit(); value="ろぐあうと" />
+        </form>
+        {% for data in user %}
+            <li>{{data.id}}</li>
+            <li>{{data.name}}</li>
+            <li>{{data.icon}}</li>
+        {% endfor %}
+    {% else %}
+        <form name="frm" method="post" action="/login">
+            <input type="button" onclick=document.frm.submit(); value="ろぐいん" />
+        </form>
+    {% endif %}
 {% endblock %}

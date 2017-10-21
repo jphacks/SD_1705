@@ -96,7 +96,7 @@ def search_result():
             if user:
                 user_id = user[0].id
             else:
-                return redirect(url_for('login'))
+                return redirect(url_for('login.login'))
 
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
@@ -108,7 +108,7 @@ def search_result():
                     favorites = Favorite.get_restaurants_by_id_user(user_id)
                     favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
                 except:
-                    return redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
+                    return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
             
             for idx, restaurant in enumerate(results['stores']):
                 results['stores'][idx]['fav'] = False
@@ -118,7 +118,10 @@ def search_result():
 
             return render_template('search_result.html', results=results) # resultsが完成したらresults=resultsに変える
 
-        elif status[0] == 'NOT_FOUND' or status[0] == 'ZERO_RESULTS': # 入力が間違えている
+        elif status[0] == 'NOT_FOUND':
+            return render_template('search_result.html', status=status)
+
+        elif status[0] == 'ZERO_RESULTS': # 入力が間違えている
             return render_template('search_result.html', status=status)
     else:
         return render_template('search_result.html', status=('UNKNOWN_ERROR'))

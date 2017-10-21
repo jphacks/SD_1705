@@ -29,7 +29,7 @@ def search_near_restaurants(points):
             restaurant_dict = { attr: restaurant[attr] for attr in attrs }
             restaurant_dict['budget'] = restaurant['budget']['name']
             restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
-            restaurant_dict['parking'] = restaurant_dict['parking'].split(':')[0]
+            restaurant_dict['parking'] = restaurant_dict['parking'].split('：')[0]
             if restaurant_dict not in ret:
                 ret.append(restaurant_dict)
     return ret

@@ -36,6 +36,7 @@ class Restaurant(Base):
     store_id = Column(Text, nullable=False)
     lat = Column(REAL, nullable=False)
     lng = Column(REAL, nullable=False)
+    genre = Column(Text, nullable=False)
     name = Column(Text, nullable=False)
     address = Column(Text, nullable=False)
     budget = Column(Text, nullable=False)

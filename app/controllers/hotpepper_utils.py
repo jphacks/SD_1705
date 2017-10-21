@@ -15,6 +15,7 @@ def search_near_restaurants(points):
         - 近い飲食店の情報リスト
             - 各店舗について
                 - 緯度経度
+                - ジャンル
                 - 店名
                 - 住所
                 - 予算
@@ -30,6 +31,7 @@ def search_near_restaurants(points):
         near_restaurants = get_restaurants(lat, lng)
         for restaurant in near_restaurants:
             restaurant_dict = { attr: restaurant[attr] for attr in attrs }
+            restaurant_dict['genre'] = restaurant['genre']['name']
             restaurant_dict['budget'] = restaurant['budget']['name']
             restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
 

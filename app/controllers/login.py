@@ -38,7 +38,7 @@ def before_request():
 def login():
     if request.method == 'POST':
         oauth_callback = url_for('login.authorized', _external=True)
-        params = {'oauth_callback': oauth_callback, 'force_login':True}
+        params = {'oauth_callback': oauth_callback}
 
         r = twitter.get_raw_request_token(params=params)
         data = parse_utf8_qsl(r.content)
@@ -47,12 +47,15 @@ def login():
 
         return redirect(twitter.get_authorize_url(data['oauth_token'], **params))
 
+    if 'twitter_token' in session:
+        return redirect(url_for('top.top_page'))
+
     logining = g.user is not None
+    is_login = True
     if 'is_login' in session:
         is_login = session.pop('is_login')
-        flash('ログインしてください')
 
-    return render_template('login.html', logining=logining, user=g.user)
+    return render_template('login.html', logining=logining, user=g.user, is_login=is_login)
 
 
 @app.route('/logout')
@@ -82,8 +85,6 @@ def authorized():
     with UserModel() as User:
         users_by_token = User.get_user_by_token(request_token)
         users_by_twid = User.get_user_by_twitter_id(verify['id'])
-        print(users_by_token)
-        print(users_by_twid)
         if users_by_token == [] and users_by_twid == []:
             users = User.create_user(verify['id'], verify['screen_name'], verify['profile_image_url'], request_token, request_token_secret)
         else:
@@ -98,4 +99,4 @@ def authorized():
             })
     session['twitter_token'] = request_token
 
-    return redirect(url_for('my_page.my_page'))
+    return redirect(url_for('top.top_page'))

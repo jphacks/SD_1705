@@ -3,6 +3,7 @@
 """
 
 import requests
+import json
 
 def search_near_restaurants(points):
     """
@@ -18,11 +19,18 @@ def search_near_restaurants(points):
                 - 駐車場の有無
                 - ホットペッパーのページのURL
     """
-    near_restaurants = set()
-    for lat, lng in points:
-        near_restaurants.update(get_restaurants(lat, lng))
-    
-    return list(near_restaurants)
+    ret = []
+    attrs = ['lat', 'lng', 'name', 'budget', 'open', 'parking']
+    for point in points:
+        lat = point['lat']
+        lng = point['lng']
+        near_restaurants = get_restaurants(lat, lng)
+        for restaurant in near_restaurants:
+            restaurant_dict = { attr: restaurant[attr] for attr in attrs }
+            restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
+            if restaurant_dict not in ret:
+                ret.append(restaurant_dict)
+    return ret
 
 def get_restaurants(lat, lng):
     """
@@ -38,8 +46,11 @@ def get_restaurants(lat, lng):
         'format': 'json'
     }
     request = requests.get(base_url, params=params)
-    print(request.text['result'])
-    return []
+    result = json.loads(request.text)
+    # print(result['results']['shop'])
+    return result['results']['shop']
 
-#とりあえず片平キャンパスと仙台駅
-print(search_near_restaurants([(38.253834, 140.87407400000006), (38.2601316, 140.88243750000004)]))
+#とりあえず片平キャンパスと仙台駅でテスト
+if __name__ == '__main__':
+    restaurants = search_near_restaurants([{'lat': 38.253834, 'lng': 140.87407400000006}, {'lat': 38.2601316, 'lng': 140.88243750000004}])
+    print(restaurants)

@@ -53,3 +53,7 @@ class FavoriteModel():
         '''
         restaurants_data = self.session.query(Favorites).filter_by(id_user=id_user).all()
         return restaurants_data
+
+    def is_exist(self, id_user, id_restaurant):
+        restaurants_data = self.session.query(Favorites).filter_by(id_user=id_user, id_restaurant=id_restaurant).all()
+        return bool(restaurants_data)

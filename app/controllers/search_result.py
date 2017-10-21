@@ -125,3 +125,16 @@ def search_result():
         session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top.top_page'))
+
+def handle_fav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        if Favorite.is_exist_fav(user_id, store_id):
+            return unfav(Favorite, user_id, store_id)
+        else:
+            return fav(Favorite, user_id, store_id)
+
+def fav(Favorite, user_id, store_id):
+    return Favorite.create_fav(user_id, store_id)
+
+def unfav(Favorite, user_id, store_id):
+    return Favorite.create_fav(user_id, store_id)

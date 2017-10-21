@@ -65,31 +65,36 @@ def search_result():
             {'id': 'J000054592', 'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'address': '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'budget': '2001～3000円', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016', 'fav': True}
         ]  
     }
-    mock_points = {
-        'origin': "東北大学片平キャンパス",
-        'destination': "仙台駅",
-        'waypoints':[
-            "e-Beans"
-        ]
-    }
     
-    googlemap = GoogleMap_parsing(mock_points['origin'], mock_points['destination'], mock_points['waypoints'])
+    origin = request.args.get('origin')
+    destination = request.args.get('dest')
+    num_of_ways = len(request.args) - 2
+    waypoints = [request.args.get('way{}'.format(i))for i in range(num_of_ways)]
+
+    googlemap = GoogleMap_parsing(origin, destination, waypoints)
     status = googlemap.get_input_location_status()
+    errors = {
+        'NOT_FOUND': status[1],
+        'ZERO_RESULTS': (status[0] == 'ZERO_RESULTS'),
+        'UNKNOWN_ERROR': (status[0] == 'UNKNOWN_ERROR')
+    }
 
     for _ in range(MAX):
         if status[0] == 'OK':
             results = {}
-            results['points'] = mock_points
+            results['points'] = {
+                'origin': origin,
+                'destination': destination,
+                'waypoints': waypoints
+            }
             results['stores'] = search_near_restaurants(googlemap.get_route())
-            # print(results)
             
             # ユーザid取得
-            # token = session['twitter_token']
+            token = session['twitter_token']
             
             with UserModel() as User:
-                # User.create_user('noisy_noimin', 'Noimin', icon_url="", token="token", secret="secret")
                 try:
-                    user = User.get_user_by_token(token='token')
+                    user = User.get_user_by_token(token=token)
                 except:
                     return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
             
@@ -100,10 +105,6 @@ def search_result():
 
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
-                # Restaurant.create_restaurant('J000054592', 38.2601694902, 140.8821385879, 'Order cafe dining 仙台', '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', '2001～3000円', 'なし', 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016')
-                # Favorite.create_fav(1, 1)
-                # Restaurant.create_restaurant('J001177343', 38.2603907956, 140.8801562494, '天ぷら寿司 えびす', '宮城県仙台市青葉区中央１-10-25\u3000EDEN仙台', '月～日、祝日、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', '3001～4000円', 'あり ：近くにコインパーキングございます。', 'https://www.hotpepper.jp/strJ001177343/?vos=nhppalsa000016')
-                # Favorite.create_fav(2, 2)
                 try:
                     favorites = Favorite.get_restaurants_by_id_user(user_id)
                     favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
@@ -116,10 +117,17 @@ def search_result():
                     if restaurant['id'] == favorite_restaurant.store_id:
                         results['stores'][idx]['fav'] = True
 
-            return render_template('search_result.html', results=results) # resultsが完成したらresults=resultsに変える
+            return render_template('search_result.html', results=results)
 
-        elif status[0] == 'NOT_FOUND' or status[0] == 'ZERO_RESULTS': # 入力が間違えている
-            return render_template('search_result.html', status=status)
+        else:
+            session['NOT_FOUND'] = errors['NOT_FOUND']
+            session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
+            session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
+            return redirect(url_for('top'))
+
     else:
-        return render_template('search_result.html', status=('UNKNOWN_ERROR'))
+        session['NOT_FOUND'] = errors['NOT_FOUND']
+        session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
+        session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
+        return redirect(url_for('top'))
 

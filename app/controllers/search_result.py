@@ -1,7 +1,7 @@
 from flask import Blueprint, session, render_template, redirect, url_for, request
 
 from hotpepper_utils import search_near_restaurants
-#  from googlemaps_utils import *
+from googlemap_utils import GoogleMap_parsing
 
 import sys; sys.path.append('/Users/yoshinari/work/SD_1705/app') # いらなくなるかも
 from models.favorites import FavoriteModel
@@ -59,10 +59,21 @@ def search_result():
                 {'lat': '38.2602889240', 'lng': '140.8822469063', 'name': '寿司田 仙台駅ビル店', 'address': '宮城県仙台市青葉区中央１‐１‐１ 仙台エスパルＢ１', 'budget': {'average': '3000円', 'name': '3001～4000円', 'code': 'B003'}, 'open': '月～日、祝日、祝前日: 11:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）', 'parking': 'なし', 'url': 'https://www.hotpepper.jp/strJ000279012/?vos=nhppalsa000016', 'fav': False}
             ]  
     }
+    mock_points = {
+        'origin': "東北大学片平キャンパス"
+        'destination': "仙台駅"
+        'waypoints':[
+            "e-Beans"
+        ]
+    }
+    
+    googlemap = GoogleMap_parsing(origin)
     results = {}
     results['points'] = mock_results['points']
     points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
     results['stores'] = search_near_restaurants(points)
+    
+    """
     # ユーザid取得
     with UserModel() as user:
         try:
@@ -75,6 +86,7 @@ def search_result():
     with FavoriteModel() as favorite:
         for restaurant in results['stores']:
             pass
+    """
     return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える
 
 search_result()

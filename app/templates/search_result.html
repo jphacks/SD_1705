@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>GoogleMap</h1>
+    <br>
     <div id="showmap">
       <div id="map" style="width:620px; height:400px"></div>
       <script type="text/javascript">
@@ -22,6 +23,61 @@
   </div>
   
   <h1>ShopList</h1>
+  <br>
+  <script type="text/javascript">
+    var url = location.href;
+    console.log(url);
+    var tag = "<form class= 'form-inline' method = 'get' action = " + url + ">"; 
+    document.write(tag);
+    // console.log(url);
+  </script> 
+  <!-- <form class="form-inline" > -->
+      <fieldset>
+        <div class="form-group">
+          <label for="select" class="col-lg-2 control-label">予算</label>
+          <div class="col-lg-10">
+            <select class="form-control" id="select" name = "budget" value = "">
+              <option>1501~2000</option>
+              <option>2001~3000</option>
+              <option>3001~4000</option>
+              <option>4001~5000</option>
+              <option>5001~6000</option>
+              <option>6001~7000</option>
+              <option>7001~10000</option>
+              <option>10000~</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="select" class="col-lg-2 control-label">ジャンル</label>
+          <div class="col-lg-10">
+            <select class="form-control" id="select" name = "type" value = "">
+              <option>居酒屋</option>
+              <option>洋食</option>
+              <option>和食</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+            <label for="select" class="col-lg-2 control-label">検索半径</label>
+            <div class="col-lg-10">
+              <select class="form-control" id="select" name = "loc" value = "">
+                <option>300m</option>
+                <option>500m</option>
+                <option>1000m</option>
+                <option>2000m</option>
+                <option>3000m</option>
+              </select>
+            </div>
+          </div>
+        <div class="form-group">
+          <div class="col-lg-10 col-lg-offset-2">
+            <button class="btn btn-primary" type="submit">絞り込み</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <br>
   <div id="showshoplist">
       <table class="table table-striped table-hover ">
           <thead>

@@ -32,6 +32,7 @@ def search_near_restaurants(points):
                 ret.append(restaurant_dict)
     return ret
 
+
 def get_restaurants(lat, lng):
     """
     Hotpper APIにクエリを投げる
@@ -46,11 +47,17 @@ def get_restaurants(lat, lng):
         'format': 'json'
     }
     request = requests.get(base_url, params=params)
-    result = json.loads(request.text)
-    # print(result['results']['shop'])
-    return result['results']['shop']
+    results = json.loads(request.text)['results']
+    if 'shop' in results.keys():
+        return results['shop']
+    else:
+        return []
 
-#とりあえず片平キャンパスと仙台駅でテスト
+
 if __name__ == '__main__':
+    # とりあえず片平キャンパスと仙台駅でテスト
     restaurants = search_near_restaurants([{'lat': 38.253834, 'lng': 140.87407400000006}, {'lat': 38.2601316, 'lng': 140.88243750000004}])
+    print(restaurants)
+    # レストランがない場合
+    restaurants = search_near_restaurants([{'lat': 0, 'lng': 0}])
     print(restaurants)

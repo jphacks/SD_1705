@@ -118,7 +118,7 @@ def search_result():
 
             return render_template('search_result.html', results=results) # resultsが完成したらresults=resultsに変える
 
-        else if status[0] == 'NOT_FOUND' or status[0] == 'ZERO_RESULTS': # 入力が間違えている
+        elif status[0] == 'NOT_FOUND' or status[0] == 'ZERO_RESULTS': # 入力が間違えている
             return render_template('search_result.html', status=status)
     else:
         return render_template('search_result.html', status=('UNKNOWN_ERROR'))

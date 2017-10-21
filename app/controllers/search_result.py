@@ -86,13 +86,20 @@ def search_result():
         # User.create_user('noisy_noimin', 'Noimin', icon_url="", token="token", secret="secret")
         try:
             user = User.get_user_by_token(token='token')
-            user_id = user[0].id
         except:
             return redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
     
-    with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
-        Restaurant.create_restaurant('38.2603907956', '140.8801562494', '天ぷら寿司 えびす', '宮城県仙台市青葉区中央１-10-25\u3000EDEN仙台', '3001～4000円', '月～日、祝日、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'あり ：近くにコインパーキングございます。', 'https://www.hotpepper.jp/strJ001177343/?vos=nhppalsa000016')
+    if user:
+        user_id = user[0].id
+    else:
+        return redirect(url_for('login'))
 
+
+    with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
+        # Restaurant.create_restaurant('J000054592', 38.2601694902, 140.8821385879, 'Order cafe dining 仙台', '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', '2001～3000円', 'なし', 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016')
+        # Favorite.create_fav(1, 1)
+        # Restaurant.create_restaurant('J001177343', 38.2603907956, 140.8801562494, '天ぷら寿司 えびす', '宮城県仙台市青葉区中央１-10-25\u3000EDEN仙台', '月～日、祝日、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', '3001～4000円', 'あり ：近くにコインパーキングございます。', 'https://www.hotpepper.jp/strJ001177343/?vos=nhppalsa000016')
+        # Favorite.create_fav(2, 2)
         try:
             favorites = Favorite.get_restaurants_by_id_user(user_id)
             favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
@@ -102,6 +109,7 @@ def search_result():
     for idx, restaurant in enumerate(results['stores']):
         results['stores'][idx]['fav'] = False
         for favorite_restaurant in favorite_restaurants:
-    
+            if restaurant['id'] == favorite_restaurant.store_id:
+                results['stores'][idx]['fav'] = True
 
     return render_template('search_result.html', results=results) # resultsが完成したらresults=resultsに変える

@@ -48,7 +48,6 @@ def search_result():
     エラー内容をセッションにぶち込む(UNKNOWN_ERRORならもう一回呼び出す)
     """
     input_from_front = {
-        'fav': True,
         'store_id': 'J001101188'
     }
 
@@ -126,13 +125,3 @@ def search_result():
         session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top.top_page'))
-
-def fav(user_id, store_id):
-    with FavoriteModel() as Favorite:
-        Favorite.create_fav(user_id, store_id)
-    return # 返り値どうする
-
-def unfav(user_id, store_id):
-    with FavoriteModel() as Favorite:
-        Favorite.create_fav(user_id, store_id)
-    return# 返り値どうするの

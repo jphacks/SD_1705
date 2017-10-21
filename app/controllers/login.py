@@ -22,7 +22,7 @@ twitter = OAuth1Service(
 @app.before_request
 def before_request():
     g.user = None
-    if 'twitter_token' in session:
+    if session.get('twitter_token') is not None:
         with UserModel() as User:
             users = User.get_user_by_token(session['twitter_token'])
             g.user = []
@@ -47,12 +47,12 @@ def login():
 
         return redirect(twitter.get_authorize_url(data['oauth_token'], **params))
 
-    if 'twitter_token' in session:
+    if session.get('twitter_token') is not None:
         return redirect(url_for('top.top_page'))
 
     logining = g.user is not None
     is_login = True
-    if 'is_login' in session:
+    if session.get('is_login') is not None:
         is_login = session.pop('is_login')
 
     return render_template('login.html', logining=logining, user=g.user, is_login=is_login)

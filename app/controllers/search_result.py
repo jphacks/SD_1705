@@ -71,11 +71,14 @@ def search_result():
             "e-Beans"
         ]
     }
-    
-    googlemap = GoogleMap_parsing(mock_points['origin'], mock_points['destination'], mock_points['waypoints'])
-    results = {}
-    results['points'] = mock_points
-    results['stores'] = search_near_restaurants(googlemap.get_route())
+    #とりあえずコメントアウト
+    # googlemap = GoogleMap_parsing(mock_points['origin'], mock_points['destination'], mock_points['waypoints'])
+    # results = {}
+    # results['points'] = mock_points
+    # results['stores'] = search_near_restaurants(googlemap.get_route())
+    #とりあえずコメントアウト
+
+ 
     # print(results)
     
     # ユーザid取得
@@ -106,9 +109,21 @@ def search_result():
             return redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
     
     for idx, restaurant in enumerate(results['stores']):
+<<<<<<< HEAD
+        results['stores'][idx]['fav'] = restaurant in favorite_restaurants
+    print(results)
+    """
+
+    return render_template('search_result.html', results=mock_results)# resultsが完成したらresults=resultsに変える
+
+
+
+# search_result()
+=======
         results['stores'][idx]['fav'] = False
         for favorite_restaurant in favorite_restaurants:
             if restaurant['id'] == favorite_restaurant.store_id:
                 results['stores'][idx]['fav'] = True
 
     return render_template('search_result.html', results=results) # resultsが完成したらresults=resultsに変える
+>>>>>>> develop

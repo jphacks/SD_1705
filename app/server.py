@@ -1,10 +1,11 @@
 from flask import Flask
-from controllers import *
+from controllers import my_page
 
 app = Flask(__name__)
 
 # ここにアプリを追加していく
 apps = [
+    my_page.app
 ]
 
 for a in apps:

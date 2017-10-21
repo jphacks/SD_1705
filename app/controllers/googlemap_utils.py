@@ -1,4 +1,5 @@
 import requests
+from pprint import pprint
 
 class GoogleMap_parsing():
     def __init__(self, origin: str, destination: str, waypoints: list):
@@ -40,7 +41,7 @@ class GoogleMap_parsing():
         :return: (リクエストのステータス, frontに返すdict（{num: {is_exist: bool, location: str}, num:...}）)
         """
         result_dict = dict()
-        assert len(self.result_of_gm_api) == len(self.input_locations), "入ってきたlocationの数とapiを通して得られたpointの数が違う"
+        assert len(self.result_of_gm_api['geocoded_waypoints']) == len(self.input_locations), "入ってきたlocationの数とapiを通して得られたpointの数が違う"
         for i, status_api in enumerate(self.result_of_gm_api["geocoded_waypoints"]):
             if i == 0:
                 self.__get_result_dict(result_dict, status_api, self.input_locations[i], i)

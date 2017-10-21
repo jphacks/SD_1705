@@ -65,15 +65,13 @@ def search_result():
             {'id': 'J000054592', 'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'address': '宮城県仙台市青葉区中央１-1-1\u3000仙台駅2階', 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'budget': '2001～3000円', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016', 'fav': True}
         ]  
     }
-    mock_points = {
-        'origin': "東北大学片平キャンパス",
-        'destination': "仙台駅",
-        'waypoints':[
-            "e-Beans"
-        ]
-    }
     
-    googlemap = GoogleMap_parsing(mock_points['origin'], mock_points['destination'], mock_points['waypoints'])
+    origin = request.args.get('origin')
+    destination = request.args.get('dest')
+    num_of_ways = len(request.args) - 2
+    waypoints = [request.args.get('way{}'.format(i))for i in range(num_of_ways)]
+
+    googlemap = GoogleMap_parsing(origin, destination, waypoints)
     status = googlemap.get_input_location_status()
     errors = {
         'NOT_FOUND': status[1],
@@ -84,9 +82,12 @@ def search_result():
     for _ in range(MAX):
         if status[0] == 'OK':
             results = {}
-            results['points'] = mock_points
+            results['points'] = {
+                'origin': origin,
+                'destination': destination,
+                'waypoints': waypoints
+            }
             results['stores'] = search_near_restaurants(googlemap.get_route())
-            # print(results)
             
             # ユーザid取得
             token = session['twitter_token']

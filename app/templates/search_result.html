@@ -23,16 +23,16 @@
   
   <h1>ShopList</h1>
   <br>
-  <script type="text/javascript">
-    var url = location.href;
-    console.log(url);
-    var tag = "<form class='form-inline' method ='get' action = '"+ url + "'>";
-    document.write(tag);
-  </script>
 
-  <!-- <script type="text/javascript" src="static/js/geturl.js"></script> -->
   <!-- <form class="form-inline" > -->
+    <form class='form-inline' method ='get' action ='/search_result'> 
       <fieldset>
+      <script type="text/javascript">
+          var tag1 = "<input type='hidden' name='origin' value=" + {{results.points.origin}} + " >";
+          var tag2 = "<input type='hidden' name='dest' value=" + {{results.points.destination}} + " >"; 
+          document.write(tag1);
+          document.write(tag2);
+      </script>
       <div class = "row">
         <div class="form-group">
           <div class="col-xs-5">

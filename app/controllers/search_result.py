@@ -81,7 +81,7 @@ def search_result():
     
     # ユーザid取得
     # token = session['twitter_token']
-    
+    """
     with UserModel() as User:
         # User.create_user('noisy_noimin', 'Noimin', icon_url="", token="token", secret="secret")
         try:
@@ -104,10 +104,9 @@ def search_result():
     for idx, restaurant in enumerate(results['stores']):
         results['stores'][idx]['fav'] = False
         for favorite_restaurant in favorite_restaurants:
-            
+    """
 
     return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える
-
 
 
 search_result()

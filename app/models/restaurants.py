@@ -19,7 +19,7 @@ class RestaurantModel():
         self.session.closed = True
         self.session.close()
 
-    def create_restaurant(self, lat, lng, name, address, budget, open, parking, url):
+    def create_restaurant(self, store_id, lat, lng, name, address, budget, open, parking, url):
        '''
        新しいお店を登録
        :param lat: 緯度
@@ -33,6 +33,7 @@ class RestaurantModel():
        :return: [Restaurant]
        '''
        new_restaurant = Restaurant(
+           store_id=store_id,
            lat=lat,
            lng=lng,
            name=name,

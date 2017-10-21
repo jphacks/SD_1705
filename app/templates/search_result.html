@@ -28,15 +28,16 @@
     <form class='form-inline' method ='get' action ='/search_result'> 
       <fieldset>
       <script type="text/javascript">
-          var tag1 = "<input type='hidden' name='origin' value=" + {{results.points.origin}} + " >";
-          var tag2 = "<input type='hidden' name='dest' value=" + {{results.points.destination}} + " >"; 
+          console.log({{results.points.origin.name | tojson}});
+          var tag1 = "<input type='hidden' id = 'piyo' name='origin' value=" + {{results.points.origin.name | tojson}} + " />";
+          var tag2 = "<input type='hidden' id = 'piyo' name='dest' value=" + {{results.points.destination.name | tojson}} + " />"; 
           document.write(tag1);
           document.write(tag2);
       </script>
       <div class = "row">
         <div class="form-group">
           <div class="col-xs-5">
-            <select class="form-control" id="select" name = "budget" value = "">
+            <select class="form-control" id="piyo" name = "budget" value = "">
               <option value='' disabled selected style='display:none;'>予算</option>
               <option>~500</option>
               <option>501~1000</option>
@@ -57,7 +58,7 @@
         </div>
         <div class="form-group">
           <div class="col-xs-5">
-            <select class="form-control" id="select" name = "genre" value = "">
+            <select class="form-control" id="piyo" name = "genre" value = ""/>
               <option value='' disabled selected style='display:none;'>ジャンル</option>
               <option>居酒屋</option>
               <option>ダイニングバー</option>
@@ -80,7 +81,7 @@
         </div>
         <div class="form-group">
             <div class="col-xs-5">
-              <select class="form-control" id="select" name = "range" value = "">
+              <select class="form-control" id="piyo" name = "range" value = ""/>
                 <option value='' disabled selected style='display:none;'>検索半径</option>
                 <option>300m</option>
                 <option>500m</option>
@@ -93,7 +94,7 @@
         <div class="form-group">
             <div class="form-group">
                 <div class="col-xs-5">
-                  <select class="form-control" id="select" name = "way" value = "">
+                  <select class="form-control" id="piyo" name="way" value= ""/>
                     <option value='' disabled selected style='display:none;'>移動手段</option>
                     <option>徒歩</option>
                     <option>車</option>
@@ -104,7 +105,7 @@
               </div>
             <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">
-            <button class="btn btn-primary" type="submit">絞り込み</button>
+            <button class="btn btn-primary" id="piyo" type="submit">絞り込み</button>
           </div>
         </div>
         </div>

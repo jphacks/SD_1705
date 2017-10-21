@@ -20,7 +20,7 @@ def search_near_restaurants(points):
                 - ホットペッパーのページのURL
     """
     ret = []
-    attrs = ['lat', 'lng', 'name', 'budget', 'open', 'parking']
+    attrs = ['lat', 'lng', 'name', 'address', 'budget', 'open', 'parking']
     for point in points:
         lat = point['lat']
         lng = point['lng']

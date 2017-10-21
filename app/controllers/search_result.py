@@ -71,6 +71,18 @@ def search_result():
         'fav': True
         'store_id': 'J001101188'
     }
+
+    # ユーザID求める
+    token = session['twitter_token']
+    with UserModel() as User:
+        try:
+            user = User.get_user_by_token(token=token)
+        except:
+            return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
+    if user:
+        user_id = user[0].id
+    else:
+        return redirect(url_for('login.login'))
     
     origin = request.args.get('origin')
     destination = request.args.get('dest')
@@ -94,20 +106,6 @@ def search_result():
                 'waypoints': waypoints
             }
             results['stores'] = search_near_restaurants(googlemap.get_route())
-            
-            # ユーザid取得
-            token = session['twitter_token']
-            
-            with UserModel() as User:
-                try:
-                    user = User.get_user_by_token(token=token)
-                except:
-                    return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-            
-            if user:
-                user_id = user[0].id
-            else:
-                return redirect(url_for('login.login'))
 
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
@@ -137,8 +135,12 @@ def search_result():
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top'))
 
-def fav(store_id):
-    return
+def fav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return # 返り値どうする
 
-def unfav(store_id):
-    return
+def unfav(user_id, store_id):
+    with FavoriteModel() as Favorite:
+        Favorite.create_fav(user_id, store_id)
+    return# 返り値どうするの

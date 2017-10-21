@@ -85,8 +85,6 @@ def authorized():
     with UserModel() as User:
         users_by_token = User.get_user_by_token(request_token)
         users_by_twid = User.get_user_by_twitter_id(verify['id'])
-        print(users_by_token)
-        print(users_by_twid)
         if users_by_token == [] and users_by_twid == []:
             users = User.create_user(verify['id'], verify['screen_name'], verify['profile_image_url'], request_token, request_token_secret)
         else:

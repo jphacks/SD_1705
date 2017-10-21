@@ -13,7 +13,7 @@ MAX = 1  #unknown_errorが起きた際の最大やり直し回数
 app = Blueprint('search_result', __name__)
 way_dict = {'車': 'driving', '徒歩': 'walking', '自転車': 'bicycling', '公共交通機関': 'transit'}
 
-@app.route('/search_result', methods=['GET'])
+@app.route('/search_result', methods=['GET', 'POST'])
 def search_result():
     """
     GET元: top
@@ -78,9 +78,12 @@ def search_result():
             break
         waypoints.append(waypoint)
         i += 1
-    budget = request.args.get('budget')
-    genre = request.args.get('genre')
-    way = request.args.get('way')
+    budget = request.args.post('budget')
+    genre = request.args.post('genre')
+    range_ = request.args.post('range')
+    if not range_:
+        range_ = '300m'
+    way = request.args.post('way')
     if way:
         mode = way_dict[way]
     else:
@@ -112,7 +115,7 @@ def search_result():
             for idx,latlng in enumerate(latlngs):
                 results['points']['waypoints'].append({'name': waypoints[idx], 'lat': latlng['lat'], 'lng': latlng['lng']})
                 
-            results['stores'] = search_near_restaurants(googlemap.get_route(), budget=budget, genre=genre)
+            results['stores'] = search_near_restaurants(googlemap.get_route(), budget=budget, genre=genre, range_=range_)
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
                 try:

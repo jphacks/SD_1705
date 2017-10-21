@@ -10,18 +10,23 @@ app = Blueprint('my_page', __name__)
 
 @app.route('/my_page', methods=['GET'])
 def my_page():
-
-    if 'twitter_token' not in session:
+    if session.get('twitter_token') is None:
         session['is_login'] = False
-        redirect(url_for('login'))
+        return redirect(url_for('login.login'))
 
     token = session['twitter_token']
 
+    user = {}
     with UserModel() as User:
-        user = User.get_user_by_token(token=token)
+        user_info = User.get_user_by_token(token=token)[0]
+        user = {
+            'id': user_info.twitter_id,
+            'name': user_info.user_name,
+            'icon_url': user_info.icon_url
+        }
 
     with FavoriteModel() as Favorite:
-        favorites = Favorite.get_restaurants_by_id_user(user[0].id)
+        favorites = Favorite.get_restaurants_by_id_user(user['id'])
 
     restaurants = []
     with RestaurantModel() as Restaurant:
@@ -41,5 +46,6 @@ def my_page():
 
     return render_template(
             'my_page.html',
+            user=user,
             restaurants=restaurants
             )

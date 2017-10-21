@@ -9,7 +9,7 @@ app.secret_key = SECRET_KEY
 # ここにアプリを追加していく
 apps = [
     my_page.app,
-    search_result.app
+    search_result.app,
     login.app,
     search_result.app,
     top.app

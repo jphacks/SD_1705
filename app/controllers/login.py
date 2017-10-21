@@ -94,4 +94,4 @@ def authorized():
             })
     session['twitter_token'] = request_token
 
-    return redirect(url_for('login.login'))
+    return redirect(url_for('my_page.my_page'))

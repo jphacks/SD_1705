@@ -1,5 +1,5 @@
 from flask import Flask
-from controllers import login,search_result,top
+from controllers import my_page, search_result, login,search_result,top
 
 SECRET_KEY = '\xa2Q\x97\x85\x9f\xbc\x92\x1a\xdf\x85\xbe\xc1\xea{\x97\xb4|\xe83\x1b\xd0x\xca'
 
@@ -8,6 +8,8 @@ app.secret_key = SECRET_KEY
 
 # ここにアプリを追加していく
 apps = [
+    my_page.app,
+    search_result.app
     login.app,
     search_result.app,
     top.app

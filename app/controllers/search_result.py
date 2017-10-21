@@ -5,7 +5,7 @@ from hotpepper_utils import search_near_restaurants
 app = Blueprint('search_result', __name__, template_folder='templates')
 
 @app.route('/search_result', method=['GET'])
-def serach_result():
+def search_result():
     """
     GET元: top
     render先: search_result.html?

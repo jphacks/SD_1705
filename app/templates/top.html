@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>出発地と到着地を入力</h1>
-
-
-
+    <h1>出発地と到着地を入力</h1>
+    <div class="form-group">
+            <label class="control-label" for="focusedInput">出発地</label>
+            <input class="form-control" id="focusedInput" type="text" value="This is StartPoint...">
+            <label class="control-label" for="focusedInput">到着地</label>
+            <input class="form-control" id="focusedInput" type="text" value="This is EndPoint...">
+    </div>
+        
 {% endblock %}

@@ -11,14 +11,12 @@ app = Blueprint('my_page', __name__)
 @app.route('/my_page', methods=['GET'])
 def my_page():
 
-    # ログインしていなかった時
-    # if 'twitter_token' not in session:
-    #     session['is_login'] = False
-    #     redirect(url_for('login'))
-    #
-    # token = session['twitter_token']
+    if 'twitter_token' not in session:
+        session['is_login'] = False
+        redirect(url_for('login'))
 
-    token = 'token'
+    token = session['twitter_token']
+
     with UserModel() as User:
         user = User.get_user_by_token(token=token)
 

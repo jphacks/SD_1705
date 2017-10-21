@@ -1,4 +1,5 @@
 import requests
+from pprint import pprint
 
 class GoogleMap_parsing():
     def __init__(self, origin: str, destination: str, waypoints: list):
@@ -40,7 +41,7 @@ class GoogleMap_parsing():
         :return: (リクエストのステータス, frontに返すdict（{num: {is_exist: bool, location: str}, num:...}）)
         """
         result_dict = dict()
-        assert len(self.result_of_gm_api) == len(self.input_locations), "入ってきたlocationの数とapiを通して得られたpointの数が違う"
+        assert len(self.result_of_gm_api['geocoded_waypoints']) == len(self.input_locations), "入ってきたlocationの数とapiを通して得られたpointの数が違う"
         for i, status_api in enumerate(self.result_of_gm_api["geocoded_waypoints"]):
             if i == 0:
                 self.__get_result_dict(result_dict, status_api, self.input_locations[i], i)
@@ -48,7 +49,7 @@ class GoogleMap_parsing():
                 self.__get_result_dict(result_dict, status_api, self.input_locations[i], i)
             else:
                 self.__get_result_dict(result_dict, status_api, self.input_locations[i], i)
-
+        
         return (self.result_of_gm_api["status"], result_dict)
 
 
@@ -61,7 +62,15 @@ class GoogleMap_parsing():
         :param i:
         :return:
         """
-        if status_api["geocoder_status"] == "OK":
-            result_dict[str(i)] = {"is_exist" : True, "location" : location}
+        if i == 0:
+            key = "origin"
+        elif i == len(self.result_of_gm_api)-1:
+            key = "destination"
         else:
-            result_dict[str(i)] = {"is_exist": False, "location" : location}
+            key = "way{}".format(i-1)
+            
+
+        if status_api["geocoder_status"] == "OK":
+            result_dict[key] = location
+        else:
+            result_dict[key] = None

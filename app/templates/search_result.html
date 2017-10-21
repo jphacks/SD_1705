@@ -5,13 +5,12 @@
       <div id="map" style="width:620px; height:400px"></div>
       <script type="text/javascript">
 
-          var origin = {{ origin | tojson }}
-          var destination = {{ destination | tojson }}
-          var center_lat = (origin.lat + destination.lat)/2;
-          var center_lng = (origin.lng + destination.lng)/2;
+          var center_lat = ({{results.points.origin.lat}} + {{results.points.destination.lat}})/2;
+          var center_lng = ({{results.points.origin.lng}} + {{results.points.destination.lng}})/2;
+          window.onload = function(
 
-          window.onload = function(){
-          initMap(center_lat, center_lng, {{stores | tojson}})
+          ){
+          initMap(center_lat, center_lng, {{ results.stores | tojson}})
         }
 
       </script>
@@ -28,8 +27,7 @@
           <thead>
             <tr>
               <th></th>
-              <th>店名</th>
-              <th>ジャンル</th>
+              <th>名前</th>            
               <th>予算</th>
               <th>営業時間</th>
               <th>駐車場</th>
@@ -38,7 +36,7 @@
           <tbody>
           <script type="text/javascript">
             
-            var store = {{ stores | tojson }}
+            var store = {{ results.stores | tojson }}
             
           </script>
           <script type="text/javascript" src="static/js/showshoplist.js"></script>

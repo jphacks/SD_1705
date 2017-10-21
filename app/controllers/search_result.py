@@ -1,10 +1,11 @@
 from flask import Blueprint
-from hotpepper_utils import search_near_restaurants
+from flask import Flask, render_template
+# from hotpepper_utils import search_near_restaurants
 #  from googlemaps_utils import *
 
 app = Blueprint('search_result', __name__, template_folder='templates')
 
-@app.route('/search_result', method=['GET'])
+@app.route('/search_result', methods=['GET'])
 def search_result():
     """
     GET元: top
@@ -54,9 +55,10 @@ def search_result():
             ]  
     }
     results = {}
-    results['points'] = mock_results['points']
-    points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
-    results['stores'] = search_near_restaurants(points)
+    #TODO : とりあえずコメントアウト
+    # results['points'] = mock_results['points']
+    # points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
+    # results['stores'] = search_near_restaurants(points)
     return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える
 
-search_result()
+# search_result()

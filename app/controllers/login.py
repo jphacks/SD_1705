@@ -23,7 +23,6 @@ twitter = OAuth1Service(
 def before_request():
     g.user = None
     if 'twitter_token' in session:
-        print(session['twitter_token'])
         with UserModel() as User:
             users = User.get_user_by_token(session['twitter_token'])
             g.user = []

@@ -1,7 +1,7 @@
 from flask import Blueprint, session, render_template, redirect, url_for, request
 
-from hotpepper_utils import search_near_restaurants
-from googlemap_utils import GoogleMap_parsing
+from controllers.hotpepper_utils import search_near_restaurants
+from controllers.googlemap_utils import GoogleMap_parsing
 
 import sys; sys.path.append('/Users/yoshinari/work/SD_1705/app') # いらなくなるかも
 from models.favorites import FavoriteModel
@@ -110,4 +110,4 @@ def search_result():
 
 
 
-search_result()
+#search_result()

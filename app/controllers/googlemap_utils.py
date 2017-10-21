@@ -1,6 +1,6 @@
 import requests
 
-class GoogleMao_parsing():
+class GoogleMap_parsing():
     def __init__(self, origin: str, destination: str, waypoints: list):
         self.route_list = []
         self.origin = origin

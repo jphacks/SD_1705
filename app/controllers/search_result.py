@@ -13,7 +13,7 @@ MAX = 1  #unknown_errorが起きた際の最大やり直し回数
 app = Blueprint('search_result', __name__)
 way_dict = {'車': 'driving', '徒歩': 'walking', '自転車': 'bicycling', '公共交通機関': 'transit'}
 
-@app.route('/search_result', methods=['GET', 'POST'])
+@app.route('/search_result', methods=['GET'])
 def search_result():
     """
     GET元: top
@@ -73,17 +73,18 @@ def search_result():
     waypoints = []
     i = 0
     while True:
-        waypoint = request.args.get('way{}'.format(i))
+        key = 'way{}'.format(i)
+        waypoint = request.args.get(key)
         if not waypoint:
             break
         waypoints.append(waypoint)
         i += 1
-    budget = request.from['budget']
-    genre = request.form['genre']
-    range_ = request.from['range']
+    budget = request.args.get('budget')
+    genre = request.args.get('genre')
+    range_ = request.args.get('range')
     if not range_:
         range_ = '300m'
-    way = request.form['way']
+    way = request.args.get('way')
     if way:
         mode = way_dict[way]
     else:

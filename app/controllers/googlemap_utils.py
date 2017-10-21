@@ -61,7 +61,15 @@ class GoogleMap_parsing():
         :param i:
         :return:
         """
-        if status_api["geocoder_status"] == "OK":
-            result_dict[str(i)] = {"is_exist" : True, "location" : location}
+        if i == 0:
+            key = "origin"
+        elif i == len(self.result_of_gm_api)-1:
+            key = "destination"
         else:
-            result_dict[str(i)] = {"is_exist": False, "location" : location}
+            key = "way{}".format(i-1)
+            
+
+        if status_api["geocoder_status"] == "OK":
+            result_dict[key] = location
+        else:
+            result_dict[key] = None

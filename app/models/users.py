@@ -54,7 +54,7 @@ class UserModel():
         self.session.commit()
         return [new_user]
 
-    def update_user_token(self, twitter_id, user_name, token):
+    def update_user_token(self, twitter_id, user_name, token, secret):
         '''
         ユーザのtoken情報を更新
         twitter_idで更新ユーザを識別
@@ -65,6 +65,7 @@ class UserModel():
             user = self.session.query(User).filter_by(twitter_id=twitter_id).one()
             user.user_name = user_name
             user.token = token
+            user.secret = secret
             self.session.flush()
             self.session.commit()
             return [user]

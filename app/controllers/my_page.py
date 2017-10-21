@@ -18,7 +18,7 @@ def my_page():
 
     user = {}
     with UserModel() as User:
-        user_info = User.get_user_by_token(token=token)[0]
+        user_info =User.get_user_by_token(token=token)[0]
         user = {
             'id': user_info.twitter_id,
             'name': user_info.user_name,
@@ -38,6 +38,7 @@ def my_page():
                 'id': data.id,
                 'lat': data.lat,
                 'lng': data.lng,
+                'genre':data.genre,
                 'name': data.name,
                 'address': data.address,
                 'budget': data.budget,

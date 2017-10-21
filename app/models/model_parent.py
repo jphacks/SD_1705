@@ -28,6 +28,7 @@ class Restaurant(Base):
     '''
     restaurantsテーブルのカラム
     '''
+    __tablename__ = 'restaurants'
     id = Column(Integer, primary_key=True)
     lat = Column(Numeric, nullable=False)
     lng = Column(Numeric, nullable=False)
@@ -46,6 +47,7 @@ class Favorites(Base):
     '''
     favoiteテーブルのカラム
     '''
+    __tablename__ = 'favorites'
     id = Column(Integer, primary_key=True)
     id_user = Column(Integer, nullable=False)
     id_restaurant = Column(Integer, nullable=False)

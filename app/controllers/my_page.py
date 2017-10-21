@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
+import json
 
 from models.users import UserModel
 from models.favorites import FavoriteModel
@@ -24,11 +25,23 @@ def my_page():
     with FavoriteModel() as Favorite:
         favorites = Favorite.get_restaurants_by_id_user(user[0].id)
 
-    restrants = []
+    restaurants = []
     with RestaurantModel() as Restaurant:
         for favorite in favorites:
-            restrants.append(Restaurant.get_restaurant_by_id(favorite.id))
+            data = Restaurant.get_restaurant_by_id(favorite.id)[0]
+            restaurants.append({
+                'id': data.id,
+                'lat': data.lat,
+                'lng': data.lng,
+                'name': data.name,
+                'address': data.address,
+                'budget': data.budget,
+                'open': data.open,
+                'parking': data.parking,
+                'url': data.url
+            })
 
-    for restrant in restrants:
-        print(restrants)
-    return 'nay-n'
+    return render_template(
+            'my_page.html',
+            restaurants=restaurants
+            )

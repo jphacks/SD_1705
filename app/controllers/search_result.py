@@ -3,7 +3,7 @@ from flask import Blueprint, session, render_template, redirect, url_for, reques
 from hotpepper_utils import search_near_restaurants
 #  from googlemaps_utils import *
 
-import sys; sys.path.append('..') # いらなくなるかも
+import sys; sys.path.append('/Users/yoshinari/work/SD_1705/app') # いらなくなるかも
 from models.favorites import FavoriteModel
 from models.users import UserModel
 
@@ -53,12 +53,10 @@ def search_result():
         },
         'stores': 
             [
-                # 適当に数店舗省略してある
-                {'lat': '38.2545477359', 'lng': '140.8759171692', 'name': 'marie lulu マリールゥルゥ', 'budget': {'average': '昼1000円／夜2000円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '火～土、祝前日: 11:00～16:00 （料理L.O. 15:00）', 'parking': 'あり ：店前の有料コインパーキング', 'url': 'https://www.hotpepper.jp/strJ001101188/?vos=nhppalsa000016'}, {'lat': '38.2543225131', 'lng': '140.8769107048', 'name': '武屋食堂 北目町店', 'budget': {'average': '1500円/宴会時3500円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '月～土、祝前日: 11:30～14:30 （料理L.O. 14:30 ドリンクL.O. 14:30）17:30～23:30 （料理L.O. 23:00 ドリンクL.O. 23:00）日、祝日: 17:30～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'あり ：運転される方の飲酒はお断りします。', 'url': 'https://www.hotpepper.jp/strJ000974391/?vos=nhppalsa000016', 'fav': 1}, 
-                {'lat': '38.2602889240', 'lng': '140.8822469063', 'name': '伊達の牛たん本舗 牛たん通り店', 'budget': {'average': '1,500円（通常平均）\u30001,500円（ランチ平均）', 'name': '1501～2000円', 'code': 'B001'}, 'open': '月～日、祝日、祝前日: 11:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'url': 'https://www.hotpepper.jp/strJ000302316/?vos=nhppalsa000016', 'fav': 0}, 
-                {'lat': '38.2602889240', 'lng': '140.8822469063', 'name': '松島 仙台', 'budget': {'average': '3000円', 'name': '2001～3000円', 'code': 'B002'}, 'open': '月～土: 11:00～22:30 （料理L.O. 22:30 ドリンクL.O. 22:30）日、祝日: 10:00～22:30 （料理L.O. 22:30 ドリンクL.O. 22:30）', 'parking': 'あり ：契約駐車場', 'url': 'https://www.hotpepper.jp/strJ000718475/?vos=nhppalsa000016', 'fav': 1}, 
-                {'lat': '38.2602889240', 'lng': '140.8822469063', 'name': 'シャルール ホテルメトロポリタン仙台', 'budget': {'average': '1200円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '月～日、祝日、祝前日: 09:00～19:00 （料理L.O. 18:30 ドリンクL.O. 18:30）', 'parking': 'あり ：レストラン2000円以上利用で2時間無料', 'url': 'https://www.hotpepper.jp/strJ000797021/?vos=nhppalsa000016', 'fav': 0}, 
-                {'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'budget': {'average': '1500円', 'name': '2001～3000円', 'code': 'B002'}, 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016', 'fav': 1}
+                {'lat': '38.2545477359', 'lng': '140.8759171692', 'name': 'marie lulu マリールゥルゥ', 'address': '宮城県仙台市青葉区北目町４－７\u3000HSGビル5F', 'budget': {'average': '昼1000円／夜2000円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '火～土、祝前日: 11:00～16:00 （料理L.O. 15:00）', 'parking': 'あり ：店前の有料コインパーキング', 'url': 'https://www.hotpepper.jp/strJ001101188/?vos=nhppalsa000016'}, {'lat': '38.2543225131', 'lng': '140.8769107048', 'name': '武屋食堂 北目町店', 'address': '宮城県仙台市青葉区北目町2-28', 'budget': {'average': '1500円/宴会時3500円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '月～土、祝前日: 11:30～14:30 （料理L.O. 14:30 ドリンクL.O. 14:30）17:30～23:30 （料理L.O. 23:00 ドリンクL.O. 23:00）日、祝日: 17:30～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'あり ：運転される方の飲酒はお断りします。', 'url': 'https://www.hotpepper.jp/strJ000974391/?vos=nhppalsa000016', 'fav': True}, 
+                {'lat': '38.2539089584', 'lng': '140.8772059764', 'name': '中国めしや 竹竹', 'address': '宮城県仙台市青葉区北目町２－２２', 'budget': {'average': '昼750円／夜1000円', 'name': '1501～2000円', 'code': 'B001'}, 'open': '月～土、祝前日: 11:00～14:3017:30～22:00', 'parking': 'あり', 'url': 'https://www.hotpepper.jp/strJ000710330/?vos=nhppalsa000016', 'fav': False}, 
+                {'lat': '38.2602889240', 'lng': '140.8822469063', 'name': '郷土料理 みやぎ乃 エスパル店', 'address': '宮城県仙台市青葉区中央１－１－１\u3000エスパルB１', 'budget': {'average': '1500円（通常平均）\u30002500円（宴会平均）\u30001250円（ランチ平均）', 'name': '3001～4000円', 'code': 'B003'}, 'open': '月～日、祝日、祝前日: 11:00～23:00', 'parking': 'なし ：お近くのパーキングエリアをご利用くださいませ。', 'url': 'https://www.hotpepper.jp/strJ000683774/?vos=nhppalsa000016', 'fav': True}, 
+                {'lat': '38.2602889240', 'lng': '140.8822469063', 'name': '寿司田 仙台駅ビル店', 'address': '宮城県仙台市青葉区中央１‐１‐１ 仙台エスパルＢ１', 'budget': {'average': '3000円', 'name': '3001～4000円', 'code': 'B003'}, 'open': '月～日、祝日、祝前日: 11:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）', 'parking': 'なし', 'url': 'https://www.hotpepper.jp/strJ000279012/?vos=nhppalsa000016', 'fav': False}
             ]  
     }
     results = {}
@@ -68,7 +66,6 @@ def search_result():
     # ユーザid取得
     with UserModel() as user:
         try:
-            session['twitter_token']
             user_data = user.get_user_by_token(session.pop('twitter_token', None))[0]
             user_id = user_data.twitter_id
             print(user_data)

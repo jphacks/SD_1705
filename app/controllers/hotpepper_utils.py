@@ -20,13 +20,14 @@ def search_near_restaurants(points):
                 - ホットペッパーのページのURL
     """
     ret = []
-    attrs = ['lat', 'lng', 'name', 'address', 'budget', 'open', 'parking']
+    attrs = ['id', 'lat', 'lng', 'name', 'address', 'open', 'parking']
     for point in points:
         lat = point['lat']
         lng = point['lng']
         near_restaurants = get_restaurants(lat, lng)
         for restaurant in near_restaurants:
             restaurant_dict = { attr: restaurant[attr] for attr in attrs }
+            restaurant_dict['budget'] = restaurant['budget']['name']
             restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
             if restaurant_dict not in ret:
                 ret.append(restaurant_dict)

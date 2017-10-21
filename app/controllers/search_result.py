@@ -8,7 +8,7 @@ from models.users import UserModel
 from models.restaurants import RestaurantModel
 
 
-app = Blueprint('search_result', __name__, template_folder='templates')
+app = Blueprint('search_result', __name__)
 
 
 @app.route('/search_result', methods=['GET'])
@@ -81,7 +81,7 @@ def search_result():
     
     # ユーザid取得
     # token = session['twitter_token']
-    """
+    
     with UserModel() as User:
         # User.create_user('noisy_noimin', 'Noimin', icon_url="", token="token", secret="secret")
         try:
@@ -91,10 +91,8 @@ def search_result():
             return redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
     
     with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
-        # Favorite.create_fav(user_id, 1145141919810)
-        # Restaurant.create_restaurant(lat=0, lng=0, name="野獣レストラン", address="日本", budget="810円", open="8時から10時まで", parking="無", url="")
-        # Restaurant.create_restaurant('38.2603907956', '140.8801562494', '天ぷら寿司 えびす', '宮城県仙台市青葉区中央１-10-25\u3000EDEN仙台', '3001～4000円', '月～日、祝日、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'あり ：近くにコインパーキングございます。', 'https://www.hotpepper.jp/strJ001177343/?vos=nhppalsa000016')
-        # Favorite.create_fav(user_id, 3)
+        Restaurant.create_restaurant('38.2603907956', '140.8801562494', '天ぷら寿司 えびす', '宮城県仙台市青葉区中央１-10-25\u3000EDEN仙台', '3001～4000円', '月～日、祝日、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'あり ：近くにコインパーキングございます。', 'https://www.hotpepper.jp/strJ001177343/?vos=nhppalsa000016')
+
         try:
             favorites = Favorite.get_restaurants_by_id_user(user_id)
             favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
@@ -104,9 +102,6 @@ def search_result():
     for idx, restaurant in enumerate(results['stores']):
         results['stores'][idx]['fav'] = False
         for favorite_restaurant in favorite_restaurants:
-    """
+    
 
-    return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える
-
-
-search_result()
+    return render_template('search_result.html', results=results) # resultsが完成したらresults=resultsに変える

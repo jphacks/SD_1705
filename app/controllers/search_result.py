@@ -34,6 +34,7 @@ def search_result():
             - その店がこのユーザにふぁぼられているかどうかis_stared
         - この2つを1つの辞書resultsにまとめて返す
     処理の実態はsearch_restaurantsとstar_restaurant, unstar_restaurantで
+    エラー内容をセッションにぶち込む
     """
     mock_results = {
         'points': {
@@ -52,11 +53,10 @@ def search_result():
                 {'lat': '38.2601694902', 'lng': '140.8821385879', 'name': 'Order cafe dining 仙台', 'budget': {'average': '1500円', 'name': '2001～3000円', 'code': 'B002'}, 'open': '月～日、祝日、祝前日: 07:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）', 'parking': 'なし', 'url': 'https://www.hotpepper.jp/strJ000054592/?vos=nhppalsa000016'}
             ]  
     }
-    print(mock_results)
-    # results = {}
-    # results['points'] = mock_results['points']
-    # points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
-    # results['stores'] = search_near_restaurants(points)
-    return render_template('search_result.html', results=mock_results)
+    results = {}
+    results['points'] = mock_results['points']
+    points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
+    results['stores'] = search_near_restaurants(points)
+    return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える
 
 search_result()

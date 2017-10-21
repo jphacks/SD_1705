@@ -1,11 +1,12 @@
 from flask import Flask
-from controllers import search_result
+from controllers import search_result, top
 
 app = Flask(__name__)
 
 # ここにアプリを追加していく
 apps = [
-    search_result.app
+    search_result.app,
+    top.app
 ]
 
 for a in apps:

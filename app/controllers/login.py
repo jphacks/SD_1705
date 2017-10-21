@@ -48,11 +48,11 @@ def login():
         return redirect(twitter.get_authorize_url(data['oauth_token'], **params))
 
     logining = g.user is not None
+    is_login = True
     if 'is_login' in session:
         is_login = session.pop('is_login')
-        flash('ログインしてください')
 
-    return render_template('login.html', logining=logining, user=g.user)
+    return render_template('login.html', logining=logining, user=g.user, is_login=is_login)
 
 
 @app.route('/logout')

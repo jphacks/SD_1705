@@ -78,9 +78,9 @@ def search_result():
             break
         waypoints.append(waypoint)
         i += 1
-    budget = request.from['budget']
+    budget = request.form['budget']
     genre = request.form['genre']
-    range_ = request.from['range']
+    range_ = request.form['range']
     if not range_:
         range_ = '300m'
     way = request.form['way']

@@ -1,8 +1,14 @@
-from flask import Blueprint
+from flask import Blueprint, session, render_template, redirect, url_for
+
 from hotpepper_utils import search_near_restaurants
 #  from googlemaps_utils import *
 
+from models.favorites import FavoriteModel
+from models.users import UserModel
+
+
 app = Blueprint('search_result', __name__, template_folder='templates')
+
 
 @app.route('/search_result', method=['GET'])
 def search_result():
@@ -58,6 +64,16 @@ def search_result():
     results['points'] = mock_results['points']
     points = [results['points']['origin']] + results['points']['waypoints'] + [results['points']['destination']]
     results['stores'] = search_near_restaurants(points)
+    # ユーザid取得
+    with User() as user:
+        try:
+            user_data = user.get_user_by_token(session['twitter_token'])
+        except:
+            redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
+    # ふぁぼられてるかどうかチェック
+    with Favorite() as favorite:
+        for restaurant in results['stores']:
+            pass
     return render_template('search_result.html', results=mock_results) # resultsが完成したらresults=resultsに変える
 
 search_result()

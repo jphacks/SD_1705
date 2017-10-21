@@ -7,7 +7,7 @@ function addShopList(store){
         document.write(i+1);
         document.write("</td>");
         
-        document.write("<td>");
+        document.write("<td><a style=width:100%; height:100%; display:block; href=" + stpre[i].url + "まるごとリンク</a>");
         document.write(store[i].name);
         document.write("</td>"); 
 

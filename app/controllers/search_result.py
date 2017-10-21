@@ -91,12 +91,12 @@ def search_result():
                 try:
                     user = User.get_user_by_token(token='token')
                 except:
-                    return redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
+                    return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
             
             if user:
                 user_id = user[0].id
             else:
-                return redirect(url_for('login'))
+                return redirect(url_for('login.login'))
 
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
@@ -108,7 +108,7 @@ def search_result():
                     favorites = Favorite.get_restaurants_by_id_user(user_id)
                     favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
                 except:
-                    return redirect(url_for('login')) # ログアウトされてたらloginページにリダイレクト
+                    return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
             
             for idx, restaurant in enumerate(results['stores']):
                 results['stores'][idx]['fav'] = False

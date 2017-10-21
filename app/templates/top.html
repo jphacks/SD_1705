@@ -5,28 +5,21 @@
 	<form class="form-inline">
 			<div class="form-group">
 					<label class="control-label" for="focusedInput">出発地</label>
-					<input class="form-control" id="focusedInput" type="text">
+					<input class="form-control" placeholder="出発地を入力">
 			</div>
 			<div class="form-group">
 					<label class="control-label" for="focusedInput">到着地</label>
-					<input class="form-control" id="focusedInput" type="text">
+					<input class="form-control" placeholder="到着地を入力">
 			</div>
 	</form>
 	<p>　　　　　　　　　　　</p>
 	<h2>経由地を入力</h2>
 	<p>　　　　　　　　　　　</p>
-	<script type="text/javascript" src="static/js/addform.js"></script>	
-	<div>
-	<button onclick="addFormInput();">経由地追加</button>
+	<div id="way">
+			<span class="glyphicon glyphicon-plus" size = 19 onclick="addInputForm()">経路追加</span>
 	</div>
-	<!-- <form class="form-inline">
-			<div class="form-group">
-					<label class="control-label" for="focusedInput">経由地</label>
-					<input class="form-control" id="focusedInput" type="text">
-			</div>
-	</form> 
-				 -->
-	<!-- <script type="text/javascript" src="static/js/addform.js"></script> -->
-				 
-	
+
+	<script type="text/javascript" src="static/js/addform.js"></script>					 
+	<p>　　　　　　　　　　　</p>	
+	<div class="btn btn-primary">送信</div>
 {% endblock %}

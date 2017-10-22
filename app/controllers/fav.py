@@ -8,9 +8,8 @@ app = Blueprint('fav', __name__)
 
 @app.route('/fav', methods=['POST'])
 def fav():
-    print("OK")
     '''
-    お店をお気に入り登録する
+    お店をお気に入り登録する/お気に入りから削除する
     '''
     # ユーザIDを求める
     if session.get('twitter_id') is not None:
@@ -18,6 +17,7 @@ def fav():
     else:
         session['is_login'] = False
         return redirect(url_for('login.login'))
+    '''
     with UserModel() as User:
         try:
             user = User.get_user_by_twitter_id(twitter_id=twitter_id)
@@ -27,12 +27,13 @@ def fav():
         user_id = user[0].id
     else:
         return redirect(url_for('login.login'))
+    '''
     
     store_id = request.form['id']
     
     with FavoriteModel() as Favorite:
-        print(Favorite.get_restaurant_by_id_user(user_id))
-        if not Favorite.is_exist(user_id, store_id):
+        if not Favorite.is_exist(twitter_id, store_id):
+            # ふぁぼする
             # レストラン追加
             with RestaurantModel() as Restaurant:
                 if not Restaurant.get_restaurant_by_store_id(store_id)[0]:
@@ -48,7 +49,13 @@ def fav():
                         parking=request.form['parking'],
                         url=request.form['url']
                     )
-            ret = Favorite.create_fav(id_user=user_id, id_restaurant=store_id)
-            return ""
+            ret = Favorite.create_fav(id_user=twitter_id, id_restaurant=store_id)
+            print(ret)
+        else:
+            #ふぁぼ解除する
+            with FavoriteModel() as Favorite:
+                ret = Favorite.delete_fav(id_user=twitter_id, id_restaurant=store_id)
+                print(ret)
+                
 
     return ""

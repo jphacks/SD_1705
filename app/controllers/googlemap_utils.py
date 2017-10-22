@@ -53,11 +53,10 @@ class GoogleMap_parsing():
                 lng_difference = (route[i + 1]["lng"] - route[i]["lng"]) / 10
                 index = copy_list.index(route[i])
                 insert_val = route[i]
-                for j in range(1,10):
+                for j in range(1,11):
                     insert_val["lat"] = insert_val["lat"] + lat_difference
                     insert_val["lng"] = insert_val["lng"] + lng_difference
                     copy_list.insert(index + j, deepcopy(insert_val))
-        pprint(copy_list)
         return copy_list
 
     def get_input_location_status(self) -> tuple:

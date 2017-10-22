@@ -25,7 +25,7 @@ function addShopList(store){
         document.write("</td>");
 
         document.write("<td>");
-        if(store[i].fav){
+        if(store[i].fav){       
           document.write("<input type='checkbox' checked onclick='changeFav(" + i + ",store)'>");
         } else {
            document.write("<input type='checkbox' onclick='changeFav(" + i + ",store)'>");

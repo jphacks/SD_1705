@@ -8,6 +8,7 @@ app = Blueprint('fav', __name__)
 
 @app.route('/fav', methods=['POST'])
 def fav():
+    print("OK")
     '''
     お店をお気に入り登録する
     '''
@@ -30,6 +31,7 @@ def fav():
     store_id = request.form['id']
     
     with FavoriteModel() as Favorite:
+        print(Favorite.get_restaurant_by_id_user(user_id))
         if not Favorite.is_exist(user_id, store_id):
             # レストラン追加
             with RestaurantModel() as Restaurant:

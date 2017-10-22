@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block content %}
     <h1>GoogleMap</h1>
@@ -12,7 +13,6 @@
           window.onload = function(){
           initMap(center_lat, center_lng, {{ results.stores | tojson}}, {{ results.points.waypoints | tojson}})
         }
-
       </script>
       <script type="text/javascript" src="static/js/showmap.js"></script>
 
@@ -28,11 +28,22 @@
     <form class='form-inline' method ='get' action ='/search_result'> 
       <fieldset>
       <script type="text/javascript">
-          console.log({{results.points.origin.name | tojson}});
           var tag1 = "<input type='hidden' id = 'piyo' name='origin' value=" + {{results.points.origin.name | tojson}} + " />";
           var tag2 = "<input type='hidden' id = 'piyo' name='dest' value=" + {{results.points.destination.name | tojson}} + " />"; 
           document.write(tag1);
           document.write(tag2);
+
+          var wayp = {{results.points.waypoints | tojson}};
+          console.log(wayp);
+          for(var i = 1; i < wayp.length-1; i++){
+            var w = 'way' + (i-1);
+            console.log(w);
+            var tag = "<input type='hidden' id = 'piyo' name='" + w + "'value='" + wayp[i].name + "'/>";
+            // console.log(tag);
+            document.write(tag);
+          }
+          //console.log({{results.points.waypoints | tojson}});
+
       </script>
       <div class = "row">
         <div class="form-group">
@@ -119,8 +130,8 @@
               <th width = "15">名前</th>            
               <th width = "15">予算</th>
               <th width = "15">ジャンル</th>
-              <th width = "20">営業時間</th>
-              <th width = "5">駐車場</th>
+              <th width = "15">営業時間</th>
+              <th style="width:100px;">駐車場</th>
             </tr>
           </thead>
           <tbody>

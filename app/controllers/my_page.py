@@ -33,7 +33,7 @@ def my_page():
     restaurants = []
     with RestaurantModel() as Restaurant:
         for favorite in favorites:
-            data = Restaurant.get_restaurant_by_id(favorite.id)[0]
+            data = Restaurant.get_restaurant_by_store_id(favorite.id)[0]
             restaurants.append({
                 'id': data.id,
                 'lat': data.lat,

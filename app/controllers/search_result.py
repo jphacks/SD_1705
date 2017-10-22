@@ -58,9 +58,12 @@ def search_result():
     else:
         session['is_login'] = False
         return redirect(url_for('login.login'))
-    
+
     origin = request.args.get('origin')
     destination = request.args.get('dest')
+
+    if len(origin) == 0 or len(destination) == 0:
+        return redirect(url_for('top.top_page'))
     waypoints = []
     i = 0
     while True:

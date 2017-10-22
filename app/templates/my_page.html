@@ -39,13 +39,10 @@
             this.restaurants.splice(index, 1)
             restaurant = JSON.parse(JSON.stringify(restaurant))
             console.dir(restaurant)
-            axios({
-              method: 'post',
-              url: '/fav',
-              data: {
-                restaurant:restaurant
-              }
-            })
+
+            data = restaurant
+            $.post("/fav", data);
+            console.dir(data)
           }
         }
       }

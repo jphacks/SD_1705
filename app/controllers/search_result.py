@@ -112,7 +112,7 @@ def search_result():
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
                 try:
                     favorites = Favorite.get_restaurants_by_id_user(user_id)
-                    favorite_restaurants = [Restaurant.get_restaurant_by_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
+                    favorite_restaurants = [Restaurant.get_restaurant_by_store_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
                 except:
                     return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
             

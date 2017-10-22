@@ -1,35 +1,63 @@
 {% extends "baselogin.html" %}
 {% block content %}
-<h1>ログインてすと</h1>
+<div class="bg-slider">
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
+      {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
     {% endwith %}
     {% if logining %}
-        <form name="frm" method="get" action="/logout">
-            <input type="button" onclick=document.frm.submit(); value="ろぐあうと" />
-        </form>
-        {% for data in user %}
-            <li>{{data.id}}</li>
-            <li>{{data.name}}</li>
-            <li>{{data.icon}}</li>
-        {% endfor %}
+      <form name="frm" method="get" action="/logout">
+        <input type="button" onclick=document.frm.submit(); value="ろぐあうと"/>
+      </form>
+      {% for data in user %}
+        <li>{{data.id}}</li>
+        <li>{{data.name}}</li>
+        <li>{{data.icon}}</li>
+      {% endfor %}
     {% else %}
-        <form name="frm" method="post" action="/login">
-            <input type="button" onclick=document.frm.submit(); value="ろぐいん" />
-        </form>
-    {% endif %}
+      <form name="frm" method="post" action="/login">
+        <h1 class="bg-slider__title"><a href="#" onclick=document.frm.submit();>LOG IN NAGARAMESHI</a></h1>
+      </form>
+  {% endif %}
+
+</div>
     <script>
-        window.onload = function() {
-            if('{{ is_login }}' == 'False'){
-                alert("ログインしてください");
-            }
-        };
+      window.onload = function() {
+        if ('{{ is_login }}' == 'False') {
+          alert("ログインしてください");
+        }
+
+      }
+      jQuery(function ($) {
+        $('.bg-slider').bgSwitcher({
+          images: ['/static/img/login1.jpg', '/static/img/login2.jpg', '/static/img/login3.jpg'], // 切り替える背景画像を指定
+        });
+      })
     </script>
+    <style>
+      .bg-slider {
+        width: 100%;
+        height: 80vh;
+        background-position:center center;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .bg-slider__title{
+        color: #fff;
+        font-size: 48px;
+        line-height: 1.5;
+        font-weight: bold;
+        text-align:center;
+        text-shadow: 1px 1px 1px #000;
+      }
+    </style>
 {% endblock %}
 

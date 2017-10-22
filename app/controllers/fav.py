@@ -12,28 +12,29 @@ def fav():
     お店をお気に入り登録する
     '''
     # ユーザIDを求める
-    if session.get('twitter_token') is not None:
-        token = session['twitter_token']
+    if session.get('twitter_id') is not None:
+        twitter_id = session['twitter_id']
     else:
         session['is_login'] = False
         return redirect(url_for('login.login'))
     with UserModel() as User:
         try:
-            user = User.get_user_by_token(token=token)
+            user = User.get_user_by_twitter_id(twitter_id=twitter_id)
         except:
             return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
     if user:
         user_id = user[0].id
     else:
         return redirect(url_for('login.login'))
-
-    store_id = request.form('store_id')
+    
+    store_id = request.form['id']
+    
     with FavoriteModel() as Favorite:
         if not Favorite.is_exist(user_id, store_id):
             # レストラン追加
             with RestaurantModel() as Restaurant:
-                if not Restaurant.get_restaurant_by_store_id(store_id):
-                    Retaurant.create_restaurant(
+                if not Restaurant.get_restaurant_by_store_id(store_id)[0]:
+                    Restaurant.create_restaurant(
                         store_id=store_id, 
                         lat=request.form['lat'],
                         lng=request.form['lng'],
@@ -45,6 +46,7 @@ def fav():
                         parking=request.form['parking'],
                         url=request.form['url']
                     )
-            return Favorite.create_fav(id_user=user_id, id_restaurant=store_id)
+            ret = Favorite.create_fav(id_user=user_id, id_restaurant=store_id)
+            return ""
 
-    return None
+    return ""

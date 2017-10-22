@@ -106,7 +106,8 @@ def search_result():
             }
             for idx,latlng in enumerate(latlngs):
                 results['points']['waypoints'].append({'name': waypoints[idx], 'lat': latlng['lat'], 'lng': latlng['lng']})
-                
+            
+            pprint(googlemap.get_route())
             results['stores'] = search_near_restaurants(googlemap.get_route(), budget=budget, genre=genre, range_=range_)
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:

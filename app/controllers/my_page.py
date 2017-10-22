@@ -26,16 +26,15 @@ def my_page():
         }
     # print(user['id'])
     with FavoriteModel() as Favorite:
-        favorites = Favorite.get_restaurants_by_id_user(user['id'])
+        favorites = Favorite.get_restaurants_by_id_user(session['twitter_id'])
 
-    # print(user['id'])
-    # print(favorites)
+    print(favorites)
     restaurants = []
     with RestaurantModel() as Restaurant:
         for favorite in favorites:
-            data = Restaurant.get_restaurant_by_store_id(favorite.id)[0]
+            data = Restaurant.get_restaurant_by_store_id(favorite.id_restaurant)[0]
             restaurants.append({
-                'id': data.id,
+                'id': data.store_id,
                 'lat': data.lat,
                 'lng': data.lng,
                 'genre':data.genre,

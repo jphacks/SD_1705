@@ -6,6 +6,8 @@
     <title>NagaraMeshi</title>
     <link href="https://bootswatch.com/flatly/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="static/js/jquery.bgswitcher.js"></script>
   </head>
     <body>
     <header>
@@ -27,7 +29,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/login">Signin</a></li>
+                <li><form name="sign_in" method="post" action="/login"><a onclick="document.sign_in.submit();">Signin</a></form> </li>
               </ul>
             </li>
           </ul>

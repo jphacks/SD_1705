@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+	<div style="text-align: center;">
 	<h2>出発地・到着地を入力</h2>
 	<p>　　　　　　　　　　　</p>
 	<form class="form-inline" method="get" action="http://127.0.0.1:5000/search_result">
@@ -7,7 +8,7 @@
 					<label class="control-label" for="focusedInput">出発地</label>
 					<input class="form-control" name = "origin" value = "" placeholder="出発地を入力">
 			</div>
-			<div class="form-group">
+			<div class="form-group" style="margin-left: 10px;">
 					<label class="control-label" for="focusedInput">到着地</label>
 					<input class="form-control" name = "dest" value = "" placeholder="到着地を入力">
 			</div>
@@ -22,4 +23,5 @@
 		<p>　　　　　　　　　　　</p>	
 		<button class="btn btn-primary" type = "submit">検索</button>
 	</form>
+	</div>
 {% endblock %}

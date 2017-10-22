@@ -53,19 +53,10 @@ def search_result():
     }
 
     # ユーザID求める
-    if session.get('twitter_token') is not None:
-        token = session['twitter_token']
+    if session.get('twitter_id') is not None:
+        user_id = session['twitter_id']
     else:
         session['is_login'] = False
-        return redirect(url_for('login.login'))
-    with UserModel() as User:
-        try:
-            user = User.get_user_by_token(token=token)
-        except:
-            return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-    if user:
-        user_id = user[0].id
-    else:
         return redirect(url_for('login.login'))
     
     origin = request.args.get('origin')

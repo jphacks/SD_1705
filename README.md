@@ -1,6 +1,6 @@
 # NagaraMeshi
 
-[![Product Name](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://www.youtube.com/channel/UC4PtjOfZTbVp9DwtJv82Lzg)
+[![Product Name](nagarameshi.jpg)](https://www.youtube.com/watch?v=LpqpZCgQDN8)
 
 ## 製品概要
 ### 飯 X Tech

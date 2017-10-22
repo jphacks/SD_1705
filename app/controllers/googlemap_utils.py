@@ -2,7 +2,7 @@ import requests
 from pprint import pprint
 from copy import deepcopy
 
-DIFFERENCE = 0,005
+DIFFERENCE = 0.005
 
 class GoogleMap_parsing():
     def __init__(self, origin: str, destination: str, waypoints: list, mode="driving"):
@@ -59,7 +59,7 @@ class GoogleMap_parsing():
                     copy_list.insert(index + j, insert_val)
         return copy_list
 
-def get_input_location_status(self) -> tuple:
+    def get_input_location_status(self) -> tuple:
         """
         inputのlocationがどうかを調べる
         :return: (リクエストのステータス, frontに返すdict（{num: {is_exist: bool, location: str}, num:...}）)

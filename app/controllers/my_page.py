@@ -10,15 +10,15 @@ app = Blueprint('my_page', __name__)
 
 @app.route('/my_page', methods=['GET'])
 def my_page():
-    if session.get('twitter_token') is None:
+    if session.get('twitter_id') is None:
         session['is_login'] = False
         return redirect(url_for('login.login'))
 
-    token = session['twitter_token']
+    user_id = session['twitter_id']
 
     user = {}
     with UserModel() as User:
-        user_info =User.get_user_by_token(token=token)[0]
+        user_info =User.get_user_by_twitter_id(twitter_id=user_id)[0]
         user = {
             'id': user_info.twitter_id,
             'name': user_info.user_name,

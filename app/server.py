@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for
-from controllers import my_page, search_result, login, top
+from controllers import my_page, search_result, login, top, fav
 
 SECRET_KEY = '\xa2Q\x97\x85\x9f\xbc\x92\x1a\xdf\x85\xbe\xc1\xea{\x97\xb4|\xe83\x1b\xd0x\xca'
 
@@ -12,7 +12,8 @@ apps = [
     search_result.app,
     login.app,
     search_result.app,
-    top.app
+    top.app,
+    fav.app
 ]
 
 for a in apps:

@@ -56,5 +56,5 @@ class RestaurantModel():
         :param id: お店のid
         :return: [Restaurant]
         '''
-        restaurant_data = self.session.query(Restaurant).filter_by(store_id=store_id).one()
+        restaurant_data = self.session.query(Restaurant).filter_by(store_id=store_id).first()
         return [restaurant_data]

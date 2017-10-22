@@ -109,7 +109,7 @@ def search_result():
             }
             for idx,latlng in enumerate(latlngs):
                 results['points']['waypoints'].append({'name': waypoints[idx], 'lat': latlng['lat'], 'lng': latlng['lng']})
-                
+            
             results['stores'] = search_near_restaurants(googlemap.get_route(), budget=budget, genre=genre, range_=range_)
 
             with FavoriteModel() as Favorite, RestaurantModel() as Restaurant:
@@ -118,12 +118,13 @@ def search_result():
                     favorite_restaurants = [Restaurant.get_restaurant_by_store_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
                 except:
                     return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-            
+
             for idx, restaurant in enumerate(results['stores']):
                 results['stores'][idx]['fav'] = False
-                for favorite_restaurant in favorite_restaurants:
-                    if restaurant['id'] == favorite_restaurant.store_id:
+                for favorite in favorites:
+                    if restaurant['id'] == favorite.id_restaurant:
                         results['stores'][idx]['fav'] = True
+                        break
 
             return render_template('search_result.html', results=results)
 
@@ -138,13 +139,3 @@ def search_result():
         session['ZERO_RESULTS'] = errors['ZERO_RESULTS']
         session['UNKNOWN_ERROR'] = errors['UNKNOWN_ERROR']
         return redirect(url_for('top.top_page'))
-
-def fav(user_id, store_id):
-    with FavoriteModel() as Favorite:
-        Favorite.create_fav(user_id, store_id)
-    return # 返り値どうする
-
-def unfav(user_id, store_id):
-    with FavoriteModel() as Favorite:
-        Favorite.create_fav(user_id, store_id)
-    return# 返り値どうするの

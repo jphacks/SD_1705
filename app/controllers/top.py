@@ -7,7 +7,7 @@ app = Blueprint('top', __name__)
 def top_page():
     error = None
     # ユーザID求める
-    if session.get('twitter_token') is None:
+    if session.get('twitter_id') is None:
         session['is_login'] = False
         return redirect(url_for('login.login'))
 

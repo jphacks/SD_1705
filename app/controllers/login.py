@@ -22,9 +22,9 @@ twitter = OAuth1Service(
 @app.before_request
 def before_request():
     g.user = None
-    if session.get('twitter_token') is not None:
+    if session.get('twitter_id') is not None:
         with UserModel() as User:
-            users = User.get_user_by_token(session['twitter_token'])
+            users = User.get_user_by_twitter_id(session['twitter_id'])
             g.user = []
             for user in users:
                 g.user.append({
@@ -47,7 +47,7 @@ def login():
 
         return redirect(twitter.get_authorize_url(data['oauth_token'], **params))
 
-    if session.get('twitter_token') is not None:
+    if session.get('twitter_id') is not None:
         return redirect(url_for('top.top_page'))
 
     logining = g.user is not None
@@ -60,7 +60,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('twitter_token', None)
+    session.pop('twitter_id', None)
     return redirect(url_for('login.login'))
 
 
@@ -69,6 +69,7 @@ def authorized():
     request_token, request_token_secret = session.pop('twitter_oauth')
     if 'oauth_token' not in request.args:
         session['login_error'] = 'You did not authorize the request'
+        session.pop('twitter_tid', None)
         return redirect(url_for('login.login'))
     try:
         creds = {
@@ -78,14 +79,14 @@ def authorized():
         sess = twitter.get_auth_session(params=params, **creds)
     except Exception as e:
         session['login_error'] = 'There was a problem login into Twitter: '+str(e)
+        session.pop('twitter_tid', None)
         return redirect(url_for('login.login'))
 
     verify = sess.get('account/verify_credentials.json',params={'format': 'json'}).json()
 
     with UserModel() as User:
-        users_by_token = User.get_user_by_token(request_token)
         users_by_twid = User.get_user_by_twitter_id(verify['id'])
-        if users_by_token == [] and users_by_twid == []:
+        if  users_by_twid == []:
             users = User.create_user(verify['id'], verify['screen_name'], verify['profile_image_url'], request_token, request_token_secret)
         else:
             users = User.update_user_token(verify['id'], verify['screen_name'], request_token, request_token_secret)
@@ -97,6 +98,6 @@ def authorized():
                 'name': user.user_name,
                 'icon': user.icon_url
             })
-    session['twitter_token'] = request_token
+    session['twitter_id'] = verify['id']
 
     return redirect(url_for('top.top_page'))

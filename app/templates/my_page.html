@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="my-page">
+  <h2>{{ user.name }}</h2>
+  <img src="{{ user.icon_url }}" style="border-radius: 10px; width: 100px; height: 100px">
+
+  <table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+      <th>名前</th>
+      <th>予算</th>
+      <th>営業時間</th>
+      <th>駐車場</th>
+      <th>削除</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(restaurant, index) in restaurants">
+        <td> [[ restaurant.name ]]</td>
+        <td> [[ restaurant.budget ]]</td>
+        <td> [[ restaurant.open ]]</td>
+        <td> [[ restaurant.parking ]]</td>
+        <td> <span class="glyphicon glyphicon-remove" v-on:click="del(index, restaurant)"></span> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  var vm = new Vue({
+      el: '#my-page',
+      delimiters: ["[[", "]]"] ,
+      data: {
+          restaurants: {{ restaurants | tojson }}
+      },
+      methods:{
+        del: function (index, restaurant){
+          if (confirm('本当に削除しますか？')){
+            this.restaurants.splice(index, 1)
+            restaurant = JSON.parse(JSON.stringify(restaurant))
+            console.dir(restaurant)
+
+            data = restaurant
+            $.post("/fav", data);
+            console.dir(data)
+          }
+        }
+      }
+  })
+
+</script>
+{% endblock %}

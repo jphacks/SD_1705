@@ -28,9 +28,7 @@ def fav():
         return redirect(url_for('login.login'))
 
     store_id = request.form('store_id')
-    print(store_id, user_id)
     with FavoriteModel() as Favorite:
-        print(Favorite.is_exist(user_id, store_id))
         if not Favorite.is_exist(user_id, store_id):
             # レストラン追加
             with RestaurantModel() as Retaurant:

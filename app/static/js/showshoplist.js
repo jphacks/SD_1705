@@ -41,4 +41,5 @@ function changeFav(store_index, store){
     console.dir(store[store_index])
     data = store[store_index]
     $.post("/fav", data);
+    console.dir(data)
 }

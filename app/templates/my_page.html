@@ -17,10 +17,10 @@
     <tbody>
       <tr v-for="(restaurant, index) in restaurants">
         <td> [[ restaurant.name ]]</td>
-        <td> [[ restaurant.budget.average ]]</td>
+        <td> [[ restaurant.budget ]]</td>
         <td> [[ restaurant.open ]]</td>
         <td> [[ restaurant.parking ]]</td>
-        <td> <span class="glyphicon glyphicon-remove"></span> </td>
+        <td> <span class="glyphicon glyphicon-remove" v-on:click="del(index, restaurant)"></span> </td>
       </tr>
     </tbody>
   </table>
@@ -32,6 +32,22 @@
       delimiters: ["[[", "]]"] ,
       data: {
           restaurants: {{ restaurants | tojson }}
+      },
+      methods:{
+        del: function (index, restaurant){
+          if (confirm('本当に削除しますか？')){
+            this.restaurants.splice(index, 1)
+            restaurant = JSON.parse(JSON.stringify(restaurant))
+            console.dir(restaurant)
+            axios({
+              method: 'post',
+              url: '/fav',
+              data: {
+                restaurant:restaurant
+              }
+            })
+          }
+        }
       }
   })
 

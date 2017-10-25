@@ -2,7 +2,7 @@ var marker = new Array();
 var infoWindow = new Array();
 
 
-function initMap(lat, lng, stores, waypoints) {
+function initMap(lat, lng, stores, waypoints, mode) {
 
   var opts = {
     zoom: 15,
@@ -23,16 +23,27 @@ function initMap(lat, lng, stores, waypoints) {
 
   }
 
-  addRoute(waypoints, map)
+  var way_dict ={
+    'walking': google.maps.DirectionsTravelMode.WALKING,
+    'driving': google.maps.DirectionsTravelMode.DRIVING,
+    'bicycling': google.maps.DirectionsTravelMode.BICYCLING,
+    'transit':google.maps.DirectionsTravelMode.TRNASIT
+  }
+
+  way = way_dict[mode]
+  console.log(way)
+
+  addRoute(waypoints, map, way)
 
 
 }
 
 //routeは後
-function addRoute(way_points, map){
+function addRoute(way_points, map, mode){
 
   var directionsService = new google.maps.DirectionsService;
   var waypts = [];
+
 
   for(var i = 0; i < way_points.length; i++){
     waypts.push({location: new google.maps.LatLng(way_points[i].lat, way_points[i].lng)})
@@ -42,7 +53,7 @@ function addRoute(way_points, map){
     origin: org,
     destination:  des,
     waypoints: waypts,
-    travelMode: google.maps.DirectionsTravelMode.WALKING
+    travelMode: mode
   }
 
   directionsService.route(request, function(result, status){

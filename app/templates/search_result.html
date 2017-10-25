@@ -11,7 +11,7 @@
           var org = '{{ results.points.origin.name }}'
           var des = '{{ results.points.destination.name }}'
           window.onload = function(){
-          initMap(center_lat, center_lng, {{ results.stores | tojson}}, {{ results.points.waypoints | tojson}})
+          initMap(center_lat, center_lng, {{ results.stores | tojson}}, {{ results.points.waypoints | tojson}}, '{{ mode }}')
         }
       </script>
       <script type="text/javascript" src="static/js/showmap.js"></script>

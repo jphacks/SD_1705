@@ -126,6 +126,7 @@ def search_result():
                         results['stores'][idx]['fav'] = True
                         break
 
+            print(results)
             return render_template('search_result.html', results=results, mode=mode)
 
         else:

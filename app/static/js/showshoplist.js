@@ -3,7 +3,11 @@ addShopList(store);
 function addShopList(store){
     for(var i = 0; i < store.length; i++){
         document.write("<tr>");
-        
+        console.log(store[i].image_url);
+        document.write("<td>");
+        document.write(store[i].img_url);
+        document.write("</td>");      
+
         document.write("<td><a style=width:100%; height:100%; display:block; href=" + store[i].url + ">");
         document.write(store[i].name);
         document.write("</a></td>"); 

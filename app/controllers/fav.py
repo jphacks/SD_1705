@@ -47,7 +47,8 @@ def fav():
                         budget=request.form['budget'],
                         open=request.form['open'],
                         parking=request.form['parking'],
-                        url=request.form['url']
+                        url=request.form['url'],
+                        img_url=(request.form['img_url'] if request.form['img_url'] else None)
                     )
             ret = Favorite.create_fav(id_user=twitter_id, id_restaurant=store_id)
             print(ret)

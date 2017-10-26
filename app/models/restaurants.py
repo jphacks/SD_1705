@@ -19,7 +19,7 @@ class RestaurantModel():
         self.session.closed = True
         self.session.close()
 
-    def create_restaurant(self, store_id, lat, lng, genre, name, address, budget, open, parking, url):
+    def create_restaurant(self, store_id, lat, lng, genre, name, address, budget, open, parking, url, img_url):
        '''
        新しいお店を登録
        :param lat: 緯度
@@ -31,6 +31,7 @@ class RestaurantModel():
        :param open: 営業時間
        :param parking: 駐車場
        :param url: ホットペッパーのurl
+       :param img_url: ShopListの横に表示するようの画像url
        :return: [Restaurant]
        '''
        new_restaurant = Restaurant(
@@ -43,7 +44,8 @@ class RestaurantModel():
            budget=budget,
            open=open,
            parking=parking,
-           url=url
+           url=url,
+           img_url=img_url
        )
        self.session.add(new_restaurant)
        self.session.flush()

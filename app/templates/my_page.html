@@ -38,11 +38,9 @@
           if (confirm('本当に削除しますか？')){
             this.restaurants.splice(index, 1)
             restaurant = JSON.parse(JSON.stringify(restaurant))
-            console.dir(restaurant)
 
             data = restaurant
             $.post("/fav", data);
-            console.dir(data)
           }
         }
       }

@@ -43,9 +43,9 @@ def my_page():
                 'budget': data.budget,
                 'open': data.open,
                 'parking': data.parking,
-                'url': data.url
+                'url': data.url,
+                'img_url': data.img_url
             })
-    #print(len(favorites))
 
     return render_template(
             'my_page.html',

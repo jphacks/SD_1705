@@ -37,18 +37,33 @@ def fav():
             # レストラン追加
             with RestaurantModel() as Restaurant:
                 if not Restaurant.get_restaurant_by_store_id(store_id)[0]:
-                    Restaurant.create_restaurant(
-                        store_id=store_id, 
-                        lat=request.form['lat'],
-                        lng=request.form['lng'],
-                        genre=request.form['genre'],
-                        name=request.form['name'],
-                        address=request.form['address'],
-                        budget=request.form['budget'],
-                        open=request.form['open'],
-                        parking=request.form['parking'],
-                        url=request.form['url']
-                    )
+                    if 'img_url' in request.form:
+                        Restaurant.create_restaurant(
+                            store_id=store_id, 
+                            lat=request.form['lat'],
+                            lng=request.form['lng'],
+                            genre=request.form['genre'],
+                            name=request.form['name'],
+                            address=request.form['address'],
+                            budget=request.form['budget'],
+                            open=request.form['open'],
+                            parking=request.form['parking'],
+                            url=request.form['url'],
+                            img_url=request.form['img_url']
+                        )
+                    else:
+                        Restaurant.create_restaurant(
+                            store_id=store_id, 
+                            lat=request.form['lat'],
+                            lng=request.form['lng'],
+                            genre=request.form['genre'],
+                            name=request.form['name'],
+                            address=request.form['address'],
+                            budget=request.form['budget'],
+                            open=request.form['open'],
+                            parking=request.form['parking'],
+                            url=request.form['url']
+                        )
             ret = Favorite.create_fav(id_user=twitter_id, id_restaurant=store_id)
             print(ret)
         else:

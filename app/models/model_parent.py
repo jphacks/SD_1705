@@ -43,6 +43,7 @@ class Restaurant(Base):
     open = Column(Text, nullable=False)
     parking = Column(Boolean, nullable=False)
     url = Column(Text, nullable=False)
+    img_url = Column(Text, nullable=True)
     created_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     update_at = Column(Date, server_default=sqlalchemy.sql.func.now(), nullable=False)
     delete_at = Column(sqlalchemy.Text, default=None)

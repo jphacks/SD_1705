@@ -1,6 +1,6 @@
 # NagaraMeshi
 
-[![Product Name](nagarameshi.jpg)](https://www.youtube.com/watch?v=LpqpZCgQDN8)
+[![Product Name](nagarameshi.jpg)](https://www.youtube.com/watch?v=sktwu80lrEw)
 
 ## 製品概要
 ### 飯 X Tech

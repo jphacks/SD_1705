@@ -126,7 +126,7 @@ def search_result():
                         results['stores'][idx]['fav'] = True
                         break
 
-            return render_template('search_result.html', results=results)
+            return render_template('search_result.html', results=results, mode=mode)
 
         else:
             session['NOT_FOUND'] = errors['NOT_FOUND']

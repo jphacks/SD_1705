@@ -58,13 +58,14 @@ def get_restaurants(lat, lng, budget, genre, range_):
         'key': api_key,
         'lat': lat,
         'lng': lng,
-        'range': range_, # 与えられた地点から300m以内のお店を探す
         'format': 'json'
     }
     if budget:
         params['budget'] = budget_dict[budget]
     if genre:
         params['genre'] = genre_dict[genre]
+    if range_:
+        params['range'] = range_dict[range_]
     request = requests.get(base_url, params=params)
     results = json.loads(request.text)['results']
     if 'shop' in results.keys():

@@ -24,6 +24,33 @@ def check_weekday(weekday, str_item):
             return True
     return False
 
+def modify_time(hour_str, minute_str):
+    """
+    "翌1:00"のような表記の文字列をhour=25, minute=0のような整数値に直す
+    """
+    try:
+        hour = int(hour_str)
+    except ValueError:
+        hour = int(hour_str.replace('翌', '')) + 24
+    minute = int(minute_str)
+    return hour, minute
+
+def check_time(time, str_item):
+    opened, closed = str_item.split('～')
+    opened_hour, opened_minute = modify_time(*opened.split(':'))
+    closed_hour, closed_minute = modify_time(*closed.split(':'))
+
+    # 日付変わっても営業してるタイプの店大丈夫か？
+    if time.hour < opened_hour:
+        return False
+    if time.hour == opened_hour and time.minute < opened_minute:
+        return False
+    if time.hour > closed_hour:
+        return False
+    if time.hour == closed_hour and time.minute > closed_minute:
+        return False
+    return True
+
 def check_open(open_str):
     """
     今，お店は開いているかな？
@@ -31,15 +58,25 @@ def check_open(open_str):
     now = datetime.now()
     str_items = re.split(r"[ ）]", open_str.replace('. ', '.').replace('（', ''))
 
+    is_open_day = False
     for idx, str_item in enumerate(str_items):
+        # 曜日の部分
         if str_item and str_item[0] in weekday_list:
-            is_opened = check_weekday(now.weekday(), str_item)
-            print(is_opened)
-        elif idx % 4 == 1:
-            pass
-        else:
-            is_opened = False
-    return "\n".join(str_items)
+            
+            # 空いているはずの曜日なのにどの営業時間にも当てはまらないまま，
+            # 曜日が書いてある別の行にまでたどり着いてしまったため
+            if is_open_day:
+                return False
+
+            else:
+                is_open_day = check_weekday(now.weekday(), str_item)
+
+        # 営業時間の部分
+        elif is_open_day and 'L.O.' not in str_item:
+            if check_time(now.time(), str_item):
+                return True
+            
+    return False
 
 
 def get_restaurants(lat, lng, budget, genre, range_):
@@ -92,7 +129,14 @@ def search_near_restaurants(points, budget, genre, range_):
         near_restaurants = get_restaurants(lat, lng, budget, genre, range_)
         for restaurant in near_restaurants:
             restaurant_dict = { attr: restaurant[attr] for attr in attrs }
-            restaurant_dict['open'] = restaurant_dict['open']
+            try:
+                if check_open(restaurant_dict['open']):
+                    open_status = "営業中: "
+                else:
+                    open_status = "準備中: "
+            except:
+                open_status = ""
+            restaurant_dict['open'] = open_status + restaurant_dict['open']
             restaurant_dict['genre'] = restaurant['genre']['name']
             restaurant_dict['budget'] = restaurant['budget']['name']
             restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
@@ -105,7 +149,7 @@ def search_near_restaurants(points, budget, genre, range_):
 
 
 if __name__ == '__main__':
-    print(check_open("月～土、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 22:00 ドリンクL.O. 22:00）日、祝日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:00 （料理L.O. 21:00 ドリンクL.O. 22:00）"))
+    print(check_open("月～土、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:00 （料理L.O. 22:00 ドリンクL.O. 22:00）日、祝日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:00 （料理L.O. 21:00 ドリンクL.O. 22:00）"))
     # とりあえず片平キャンパスと仙台駅でテスト
     """
     restaurants = search_near_restaurants([{'lat': 38.253834, 'lng': 140.87407400000006,'lat': 38.2601316, 'lng': 140.88243750000004}])

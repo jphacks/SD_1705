@@ -17,17 +17,6 @@ def fav():
     else:
         session['is_login'] = False
         return redirect(url_for('login.login'))
-    '''
-    with UserModel() as User:
-        try:
-            user = User.get_user_by_twitter_id(twitter_id=twitter_id)
-        except:
-            return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-    if user:
-        user_id = user[0].id
-    else:
-        return redirect(url_for('login.login'))
-    '''
     
     store_id = request.form['id']
     

@@ -13,6 +13,18 @@ genre_dict = {'居酒屋': 'G001','ダイニングバー': 'G002','創作料理'
 range_dict = {'300m': 1, '500m': 2, '1000m': 3, '2000m': 4, '3000m': 5}
 week_day_list = ['月', '火', '水', '木', '金', '土', '日']
 
+def check_open(open_str):
+    str_items = open_str.replace('. ', '.').replace(')', ') ').split(' ')
+    for idx, str_item in enumerate(str_items):
+        if idx % 3 == 0:
+            pass
+        elif idx % 3 == 1:
+            pass
+        else:
+            continue
+    is_open = True
+    return str_items
+
 
 def get_restaurants(lat, lng, budget, genre, range_):
     """
@@ -64,13 +76,11 @@ def search_near_restaurants(points, budget, genre, range_):
         near_restaurants = get_restaurants(lat, lng, budget, genre, range_)
         for restaurant in near_restaurants:
             restaurant_dict = { attr: restaurant[attr] for attr in attrs }
+            restaurant_dict['open'] = restaurant_dict['open']
             restaurant_dict['genre'] = restaurant['genre']['name']
             restaurant_dict['budget'] = restaurant['budget']['name']
             restaurant_dict['url'] = restaurant['urls']['pc'] # 仮にPC用のURLのみ取得
             restaurant_dict['img_url'] = restaurant['photo']['pc']['s'] # 店舗画像URL
-
-            restaurant_dict['open'] = restaurant_dict['open'].replace('（', '<br />（').replace('）', "）<br />")
-            pattern_days.sub(r"\1<br />", restaurant_dict['open'])
             restaurant_dict['parking'] = restaurant_dict['parking'].split('：')[0]
             
             if restaurant_dict not in ret:
@@ -79,10 +89,12 @@ def search_near_restaurants(points, budget, genre, range_):
 
 
 if __name__ == '__main__':
-    # print(is_open("月～土、祝日、祝前日:\n11:30～16:30\n（料理L.O. 16:00 ドリンクL.O. 16:00）\n17:30～21:00\n（料理L.O. 20:30 ドリンクL.O. 20:30）"))
+    print(check_open("月～土、祝前日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 22:00 ドリンクL.O. 22:00）日、祝日: 11:30～14:00 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:00 （料理L.O. 21:00 ドリンクL.O. 22:00）"))
     # とりあえず片平キャンパスと仙台駅でテスト
+    """
     restaurants = search_near_restaurants([{'lat': 38.253834, 'lng': 140.87407400000006,'lat': 38.2601316, 'lng': 140.88243750000004}])
     print(restaurants)
     # レストランがない場合
     restaurants = search_near_restaurants([{'lat': 0, 'lng': 0}])
     print(restaurants)
+    """

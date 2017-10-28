@@ -5,25 +5,41 @@
 import requests
 import json
 import re
+from datetime import datetime
 
 pattern_days = re.compile(r"([月火水木金土日][:：])")
 
 budget_dict = {"~500":"B009","501~1000":"B010","1001~1500":"B011","1501~2000":"B001","2001~3000":"B002","3001~4000":"B003","4001~5000":"B008","5001~7000":"B004","7001~10000":"B005","10001~15000":"B006","15001~20000":"B012","20001~30000":"B013","30001~":"B014"}
 genre_dict = {'居酒屋': 'G001','ダイニングバー': 'G002','創作料理': 'G003','和食': 'G004','洋食': 'G005','イタリアン・フレンチ': 'G006','中華': 'G007','焼肉・韓国料理': 'G008','アジアン': 'G009','各国料理': 'G010','カラオケ・パーティ': 'G011','バー・カクテル': 'G012','ラーメン': 'G013','お好み焼き・もんじゃ・鉄板焼き': 'G016','カフェ・スイーツ': 'G014','その他グルメ': 'G015'}
 range_dict = {'300m': 1, '500m': 2, '1000m': 3, '2000m': 4, '3000m': 5}
-week_day_list = ['月', '火', '水', '木', '金', '土', '日']
+weekday_list = ['月', '火', '水', '木', '金', '土', '日']
+weekday_dict = {'月': 0, '火': 1, '水': 2, '木': 3, '金': 4, '土': 5, '日': 6}
+
+def check_weekday(weekday, str_item):
+    weekday_char = weekday_list[weekday]
+    if weekday_char != 6 and weekday_char in str_item:
+        return True
+    for idx,char in enumerate(str_item):
+        if char == '～' and weekday_dict[str_item[idx-1]] <= weekday <= weekday_dict[str_item[idx+1]]:
+            return True
+    return False
 
 def check_open(open_str):
-    str_items = open_str.replace('. ', '.').replace(')', ') ').split(' ')
+    """
+    今，お店は開いているかな？
+    """
+    now = datetime.now()
+    str_items = re.split(r"[ ）]", open_str.replace('. ', '.').replace('（', ''))
+
     for idx, str_item in enumerate(str_items):
-        if idx % 3 == 0:
-            pass
-        elif idx % 3 == 1:
+        if str_item and str_item[0] in weekday_list:
+            is_opened = check_weekday(now.weekday(), str_item)
+            print(is_opened)
+        elif idx % 4 == 1:
             pass
         else:
-            continue
-    is_open = True
-    return str_items
+            is_opened = False
+    return "\n".join(str_items)
 
 
 def get_restaurants(lat, lng, budget, genre, range_):

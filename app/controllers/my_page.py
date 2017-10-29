@@ -5,6 +5,8 @@ from models.users import UserModel
 from models.favorites import FavoriteModel
 from models.restaurants import RestaurantModel
 
+from collections import defaultdict
+
 app = Blueprint('my_page', __name__)
 
 
@@ -49,9 +51,12 @@ def my_page():
                     'url': data.url,
                     'img_url': data.img_url
                 })
-
+    restaurant_genre_num = defaultdict(int)
+    for restaurant in restaurants:
+        restaurant_genre_num[restaurant["genre"]] += 1
     return render_template(
                 'my_page.html',
                 user=user,
-                restaurants=restaurants
+                restaurants=restaurants,
+                restaurant_genre_num = restaurant_genre_num
             )

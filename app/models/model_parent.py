@@ -73,3 +73,6 @@ def create_tables():
     テーブルデータの作成
     '''
     Base.metadata.create_all(engine)
+
+if __name__ == '__main__':
+    create_tables()

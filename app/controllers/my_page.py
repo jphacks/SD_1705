@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import Blueprint, render_template, session, redirect, url_for, request
 import json
 
 from models.users import UserModel
@@ -14,9 +14,12 @@ def my_page():
         session['is_login'] = False
         return redirect(url_for('login.login'))
 
+    budget = request.args.get('budget')
+    genre = request.args.get('genre')
+
+    print(budget)
     user_id = session['twitter_id']
 
-    user = {}
     with UserModel() as User:
         user_info =User.get_user_by_twitter_id(twitter_id=user_id)[0]
         user = {
@@ -24,31 +27,31 @@ def my_page():
             'name': user_info.user_name,
             'icon_url': user_info.icon_url
         }
-    # print(user['id'])
+
     with FavoriteModel() as Favorite:
         favorites = Favorite.get_restaurants_by_id_user(session['twitter_id'])
 
-    print(favorites)
     restaurants = []
     with RestaurantModel() as Restaurant:
         for favorite in favorites:
-            data = Restaurant.get_restaurant_by_store_id(favorite.id_restaurant)[0]
-            restaurants.append({
-                'id': data.store_id,
-                'lat': data.lat,
-                'lng': data.lng,
-                'genre':data.genre,
-                'name': data.name,
-                'address': data.address,
-                'budget': data.budget,
-                'open': data.open,
-                'parking': data.parking,
-                'url': data.url,
-                'img_url': data.img_url
-            })
+            data = Restaurant.get_restaurant_by_store_id(favorite.id_restaurant, budget=budget, genre=genre)[0]
+            if data is not None:
+                restaurants.append({
+                    'id': data.store_id,
+                    'lat': data.lat,
+                    'lng': data.lng,
+                    'genre': data.genre,
+                    'name': data.name,
+                    'address': data.address,
+                    'budget': data.budget,
+                    'open': data.open,
+                    'parking': data.parking,
+                    'url': data.url,
+                    'img_url': data.img_url
+                })
 
     return render_template(
-            'my_page.html',
-            user=user,
-            restaurants=restaurants
+                'my_page.html',
+                user=user,
+                restaurants=restaurants
             )

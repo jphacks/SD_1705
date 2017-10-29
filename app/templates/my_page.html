@@ -10,6 +10,7 @@
       <th style = "width:50px"></th>
       <th style = "width:150px">名前</th>
       <th style = "width:100px">予算</th>
+      <th style = "width:150px">ジャンル</th>
       <th style = "width:230px">営業時間</th>
       <th style = "width:50px">駐車場</th>
       <th style = "width:50px">削除</th>
@@ -21,8 +22,10 @@
         <td><img v-bind:src="restaurant.img_url"></td>
         <td><a style="width:100%; height:100%; display:block;" v-bind:href="restaurant.url">[[ restaurant.name ]]</td>
         <td> [[ restaurant.budget ]]</td>
+        <td> [[ restaurant.genre ]] </td>
         <td> [[ restaurant.open ]]</td>
-        <td> [[ restaurant.parking ]]</td>
+        <td v-if="restaurant.parking"> あり </td>
+        <td v-else> なし </td>
         <td> <span class="glyphicon glyphicon-remove" v-on:click="del(index, restaurant)"></span> </td>
       </tr>
     </tbody>

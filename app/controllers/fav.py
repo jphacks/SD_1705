@@ -17,17 +17,6 @@ def fav():
     else:
         session['is_login'] = False
         return redirect(url_for('login.login'))
-    '''
-    with UserModel() as User:
-        try:
-            user = User.get_user_by_twitter_id(twitter_id=twitter_id)
-        except:
-            return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
-    if user:
-        user_id = user[0].id
-    else:
-        return redirect(url_for('login.login'))
-    '''
     
     store_id = request.form['id']
     
@@ -45,7 +34,7 @@ def fav():
                         name=request.form['name'],
                         address=request.form['address'],
                         budget=request.form['budget'],
-                        open=request.form['open'],
+                        open=request.form['open'].replace('営業中: ', '').replace('準備中: ', ''),
                         parking=True if request.form['parking'] == "あり " else False,
                         url=request.form['url'],
                         img_url=(request.form['img_url'] if request.form['img_url'] else None)

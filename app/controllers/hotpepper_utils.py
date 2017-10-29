@@ -40,7 +40,6 @@ def check_time(time, str_item):
     opened_hour, opened_minute = modify_time(*opened.split(':'))
     closed_hour, closed_minute = modify_time(*closed.split(':'))
 
-    # 日付変わっても営業してるタイプの店大丈夫か？
     if time.hour < opened_hour:
         return False
     if time.hour == opened_hour and time.minute < opened_minute:

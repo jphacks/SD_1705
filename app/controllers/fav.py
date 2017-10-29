@@ -34,7 +34,7 @@ def fav():
                         name=request.form['name'],
                         address=request.form['address'],
                         budget=request.form['budget'],
-                        open=request.form['open'],
+                        open=request.form['open'].replace('営業中: ', '').replace('準備中: ', ''),
                         parking=request.form['parking'],
                         url=request.form['url'],
                         img_url=(request.form['img_url'] if request.form['img_url'] else None)

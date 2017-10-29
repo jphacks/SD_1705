@@ -5,15 +5,13 @@
 <div id="my-page">
   <h2>{{ user.name }}</h2>
   <img src="{{ user.icon_url }}" style="border-radius: 10px; width: 100px; height: 100px">
-</div>
-
-<div class="graph"; style="width:50%;float:right;">
+  <div class="graph"; style="width:70%;float:right;">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
   <canvas id="myChart"></canvas>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var data = {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['居酒屋', 'ダイニングバー', '創作料理', '和食', '洋食', 'イタリアン・フレンチ', '中華','焼肉・韓国料理',
                 'アジアン', '各国料理', 'カラオケ・パーティ', 'バー・カクテル', 'ラーメン', 'お好み焼き・もんじゃ・鉄板焼き',
@@ -52,7 +50,55 @@
         }
         var myChart = new Chart(ctx,data);
     </script>
+  </div>
 </div>
+
+{#<div class="graph"; style="width:50%;float:right;">#}
+{#  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>#}
+{#  <canvas id="myChart"></canvas>#}
+{#    <script>#}
+{#        var ctx = document.getElementById('myChart').getContext('2d');#}
+{#        var data = {#}
+{#            type: 'pie',#}
+{#            data: {#}
+{#                labels: ['居酒屋', 'ダイニングバー', '創作料理', '和食', '洋食', 'イタリアン・フレンチ', '中華','焼肉・韓国料理',#}
+{#                'アジアン', '各国料理', 'カラオケ・パーティ', 'バー・カクテル', 'ラーメン', 'お好み焼き・もんじゃ・鉄板焼き',#}
+{#                'カフェ・スイーツ', 'その他'],#}
+{#                datasets: [{#}
+{#                    label: 'apples',#}
+{#                    data: [{{ restaurant_genre_num['居酒屋'] }}, {{ restaurant_genre_num['ダイニングバー'] }},#}
+{#                        {{ restaurant_genre_num['創作料理'] }}, {{ restaurant_genre_num['和食'] }},#}
+{#                        {{ restaurant_genre_num['洋食'] }}, {{ restaurant_genre_num['イタリアン・フレンチ'] }},#}
+{#                        {{ restaurant_genre_num['中華'] }}, {{ restaurant_genre_num['焼肉・韓国料理'] }},#}
+{#                        {{ restaurant_genre_num['アジアン'] }}, {{ restaurant_genre_num['各国料理'] }},#}
+{#                        {{ restaurant_genre_num['カラオケ・パーティ'] }}, {{ restaurant_genre_num['バー・カクテル'] }},#}
+{#                        {{ restaurant_genre_num['ラーメン'] }}, {{ restaurant_genre_num['お好み焼き・もんじゃ・鉄板焼き'] }},#}
+{#                        {{ restaurant_genre_num['カフェ・スイーツ'] }}, {{ restaurant_genre_num['その他'] }}],#}
+{#                    backgroundColor:  [#}
+{#                        "#ff69b4",#}
+{#                        "#9400d3",#}
+{#                        "#adff2f",#}
+{#                        "#bdb76b",#}
+{#                        "#ffff00",#}
+{#                        "#ff6347",#}
+{#                        "#a52a2a",#}
+{#                        "#ff0000",#}
+{#                        "#008000",#}
+{#                        "#4169e1",#}
+{#                        "#800080",#}
+{#                        "#8a2be2",#}
+{#                        "#ff4500",#}
+{#                        "#00ffff",#}
+{#                        "#d2691e",#}
+{#                        "#f8f8ff"#}
+{##}
+{#                      ]#}
+{#                }]#}
+{#            }#}
+{#        }#}
+{#        var myChart = new Chart(ctx,data);#}
+{#    </script>#}
+{#</div>#}
 
 <div id="table">
   <table style = "table-layout:fixed;" class="table table-striped table-hover ">

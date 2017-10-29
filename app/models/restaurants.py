@@ -52,11 +52,15 @@ class RestaurantModel():
        self.session.commit()
        return [new_restaurant]
 
-    def get_restaurant_by_store_id(self, store_id):
+    def get_restaurant_by_store_id(self, store_id, budget=None, genre=None):
         '''
         お店をstore_idで引っ張ってくる
         :param id: お店のid
         :return: [Restaurant]
         '''
-        restaurant_data = self.session.query(Restaurant).filter_by(store_id=store_id).first()
+        restaurant_data = self.session.query(Restaurant).filter_by(store_id=store_id)
+        restaurant_data = restaurant_data.filter_by(budget=budget) if budget else restaurant_data
+        restaurant_data = restaurant_data.filter_by(genre=genre) if genre else restaurant_data
+        restaurant_data = restaurant_data.first()
+
         return [restaurant_data]

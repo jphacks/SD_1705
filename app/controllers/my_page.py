@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
 import json
 
+from controllers.hotpepper_utils import check_open
+
 from models.users import UserModel
 from models.favorites import FavoriteModel
 from models.restaurants import RestaurantModel
@@ -35,6 +37,14 @@ def my_page():
     with RestaurantModel() as Restaurant:
         for favorite in favorites:
             data = Restaurant.get_restaurant_by_store_id(favorite.id_restaurant, budget=budget, genre=genre)[0]
+            try:
+                if check_open(data.open):
+                    open_status = "営業中: "
+                else:
+                    open_status = "準備中: "
+            except:
+                open_status = ""
+            
             if data is not None:
                 restaurants.append({
                     'id': data.store_id,
@@ -44,7 +54,7 @@ def my_page():
                     'name': data.name,
                     'address': data.address,
                     'budget': data.budget,
-                    'open': data.open,
+                    'open': open_status+data.open,
                     'parking': data.parking,
                     'url': data.url,
                     'img_url': data.img_url

@@ -148,10 +148,6 @@ def search_near_restaurants(points, budget, genre, range_):
                 else:
                     open_status = "準備中: "
             except:
-                print(restaurant_dict['name'])
-                print(restaurant_dict['open'])
-                import traceback
-                traceback.print_exc()
                 wrong_count += 1
                 open_status = ""
             restaurant_dict['open'] = open_status + restaurant_dict['open']

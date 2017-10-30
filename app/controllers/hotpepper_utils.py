@@ -135,7 +135,6 @@ def search_near_restaurants(points, budget, genre, range_):
     """
     ret = []
     attrs = ['id', 'lat', 'lng', 'name', 'address', 'open', 'parking']
-    wrong_count = 0
     for point in points:
         lat = point['lat']
         lng = point['lng']
@@ -148,7 +147,6 @@ def search_near_restaurants(points, budget, genre, range_):
                 else:
                     open_status = "準備中: "
             except:
-                wrong_count += 1
                 open_status = ""
             restaurant_dict['open'] = open_status + restaurant_dict['open']
             restaurant_dict['genre'] = restaurant['genre']['name']
@@ -160,7 +158,6 @@ def search_near_restaurants(points, budget, genre, range_):
             if restaurant_dict not in ret:
                 ret.append(restaurant_dict)
 
-    print("wrong:{}".format(wrong_count))
     return ret
 
 

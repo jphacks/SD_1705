@@ -5,18 +5,28 @@
 import requests
 import json
 import re
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
-pattern_days = re.compile(r"([月火水木金土日][:：])")
+pattern_holiday = re.compile(r"(、)?祝(前)?日")
 
 budget_dict = {"~500":"B009","501~1000":"B010","1001~1500":"B011","1501~2000":"B001","2001~3000":"B002","3001~4000":"B003","4001~5000":"B008","5001~7000":"B004","7001~10000":"B005","10001~15000":"B006","15001~20000":"B012","20001~30000":"B013","30001~":"B014"}
 genre_dict = {'居酒屋': 'G001','ダイニングバー': 'G002','創作料理': 'G003','和食': 'G004','洋食': 'G005','イタリアン・フレンチ': 'G006','中華': 'G007','焼肉・韓国料理': 'G008','アジアン': 'G009','各国料理': 'G010','カラオケ・パーティ': 'G011','バー・カクテル': 'G012','ラーメン': 'G013','お好み焼き・もんじゃ・鉄板焼き': 'G016','カフェ・スイーツ': 'G014','その他グルメ': 'G015'}
 range_dict = {'300m': 1, '500m': 2, '1000m': 3, '2000m': 4, '3000m': 5}
-weekday_list = ['月', '火', '水', '木', '金', '土', '日']
+weekday_list = ['月', '火', '水', '木', '金', '土', '日', '祝']
 weekday_dict = {'月': 0, '火': 1, '水': 2, '木': 3, '金': 4, '土': 5, '日': 6}
+holidays = [
+    date(2017, 11, 3), date(2017, 11, 23), date(2017, 12, 23), date(2018, 1, 1)
+]
 
-def check_weekday(weekday, str_item):
+def check_weekday(date, weekday, str_item):
+    if "祝日" in str_item and date in holidays:
+        return True
+    if "祝前日" in str_item and date+timedelta(days=1) in holidays:
+        return True
+    pattern_holiday.sub('', str_item)
+
     weekday_char = weekday_list[weekday]
+
     if weekday_char != 6 and weekday_char in str_item:
         return True
     for idx,char in enumerate(str_item):
@@ -40,7 +50,6 @@ def check_time(time, str_item):
     opened_hour, opened_minute = modify_time(*opened.split(':'))
     closed_hour, closed_minute = modify_time(*closed.split(':'))
 
-    # 日付変わっても営業してるタイプの店大丈夫か？
     if time.hour < opened_hour:
         return False
     if time.hour == opened_hour and time.minute < opened_minute:
@@ -71,9 +80,8 @@ def check_open(open_str):
             # 曜日が書いてある別の行にまでたどり着いてしまったため
             if is_open_day:
                 return False
-
             else:
-                is_open_day = check_weekday(now.weekday(), str_item)
+                is_open_day = check_weekday(now.date(), now.weekday(), str_item)
 
         # 営業時間の部分
         elif is_open_day and 'L.O.' not in str_item:
@@ -140,10 +148,6 @@ def search_near_restaurants(points, budget, genre, range_):
                 else:
                     open_status = "準備中: "
             except:
-                print(restaurant_dict['name'])
-                print(restaurant_dict['open'])
-                import traceback
-                traceback.print_exc()
                 wrong_count += 1
                 open_status = ""
             restaurant_dict['open'] = open_status + restaurant_dict['open']

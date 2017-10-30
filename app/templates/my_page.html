@@ -2,8 +2,61 @@
 {% block content %}
 <div id="my-page">
   <h2>{{ user.name }}</h2>
-  <img src="{{ user.icon_url }}" style="border-radius: 10px; width: 100px; height: 100px">
+  <img src="{{ user.icon_url }}" style="border-radius: 10px; width: 100px; height: 100px; margin-bottom: 10px">
 
+  <form class='form-inline' method ='get' action ='/my_page'>
+    <div class = "row">
+      <div class="form-group">
+        <div class="col-xs-5">
+          <select class="form-control" id="piyo" name = "budget" value = "">
+            <option value='' disabled selected style='display:none;'>予算</option>
+            <option>～500円</option>
+            <option>501～1000円</option>
+            <option>1001～1500円</option>
+            <option>1501～2000円</option>
+            <option>2001～3000円</option>
+            <option>3001～4000円</option>
+            <option>4001～5000円</option>
+            <option>5001～6000円</option>
+            <option>6001～7000円</option>
+            <option>7001～10000円</option>
+            <option>10001～15000円</option>
+            <option>15001～20000円</option>
+            <option>20001～30000円</option>
+            <option>30001～円</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-5">
+          <select class="form-control" id="piyo" name = "genre" value = ""/>
+            <option value='' disabled selected style='display:none;'>ジャンル</option>
+            <option>居酒屋</option>
+            <option>ダイニングバー</option>
+            <option>創作料理</option>
+            <option>和食</option>
+            <option>洋食</option>
+            <option>イタリアン・フレンチ</option>
+            <option>中華</option>
+            <option>焼肉・韓国料理</option>
+            <option>アジアン</option>
+            <option>各国料理</option>
+            <option>カラオケ・パーティ</option>
+            <option>バー・カクテル</option>
+            <option>ラーメン</option>
+            <option>お好み焼き・もんじゃ・鉄板焼き</option>
+            <option>カフェ・スイーツ</option>
+            <option>その他</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+          <button class="btn btn-primary" id="piyo" type="submit">絞り込み</button>
+        </div>
+      </div>
+    </div>
+  </form>
   <table style = "table-layout:fixed;" class="table table-striped table-hover ">
     <thead>
     <tr>

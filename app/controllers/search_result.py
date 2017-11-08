@@ -116,7 +116,6 @@ def search_result():
                 try:
                     favorites = Favorite.get_restaurants_by_id_user(user_id)
                     favorite_restaurants = [Restaurant.get_restaurant_by_store_id(favorite_restaurant.id)[0] for favorite_restaurant in favorites]
-                    print(favorite_restaurants)
                 except:
                     return redirect(url_for('login.login')) # ログアウトされてたらloginページにリダイレクト
 

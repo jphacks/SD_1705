@@ -108,8 +108,10 @@ def get_restaurants(lat, lng, budget, genre, range_):
     if genre:
         params['genre'] = genre_dict[genre]
     if range_:
+        print(range_, range_dict[range_])
         params['range'] = range_dict[range_]
     request = requests.get(base_url, params=params)
+    print(request.url)
     results = json.loads(request.text)['results']
     if 'shop' in results.keys():
         return results['shop']

@@ -85,6 +85,7 @@ webアプリなので，特定の機種に限定することなくお使いい�
 * [ホットペッパーWebサービス グルメサーチAPI](https://webservice.recruit.co.jp/hotpepper/reference.html)
 
 #### フレームワーク・ライブラリ・モジュール
+* [bootstrap](http://getbootstrap.com/)
 * [Flask](http://flask.pocoo.org/)
 * [Vue.js](https://jp.vuejs.org/index.html)
 * [jQuery](https://jquery.com/)
